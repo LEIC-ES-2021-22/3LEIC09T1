@@ -13,7 +13,7 @@
 
 Our project aims to provide members of *Faculdade de Engenharia Universidade do Porto* with a variety of notifications regarding specific events related to their degree, such as(...)
 
-Unlike sigarra, where there is no notification system in place, our product aims to improve the user experience with UNI by adding one, as well as aid the user not to forget events within its interest.
+as sigarra has no notification system in place, our product aims to differentiate UNI by adding one. We believe this feature will aid the user not to forget events within its interest, as well as improve the app's usability and overall user experience.
 
 ### Main Features
 
