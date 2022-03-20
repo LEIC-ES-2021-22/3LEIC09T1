@@ -35,3 +35,19 @@ As sigarra has no notification system in place, our product aims to differentiat
 #### Nonfunctional
 - The system should be developped using Flutter version 2.0.*
 - The system should be available and fully functional for both IOS and Android devices  
+
+### Use Cases
+
+(Use case UML)
+
+#### Notification
+
+|||
+| --- | --- |
+| *Name* | Notification |
+| *Actor* |  Application (UNI) | 
+| *Description* | The application creates a notification to notify the user of a certain event. |
+| *Preconditions* | A certain event must be near to occur and notifications for this event have to be subscribed |
+| *Postconditions* |  |
+| *Normal flow* |  |
+| *Alternative flows and exceptions* |  |
