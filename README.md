@@ -27,11 +27,6 @@ As sigarra has no notification system in place, our product aims to differentiat
 
 ## Requirements
 
-#### Functional
-- The system should send a notification whenever the user has an upcoming class
-- The system should send a notification whenever it is getting near the tuition payment due date
-- The system should allow the user to edit which notifications he wishes to receive and when
-
 #### Nonfunctional
 - The system should be developped using Flutter version 2.0.*
 - The system should be available and fully functional for both IOS and Android devices  
