@@ -8,6 +8,7 @@
 - Marcelo Couto (201906086)
 - Francisco Oliveira (201907361)
 - Rui Moreira (201906355)
+- José Costa (202004823)
 
 ## Product Vision
 
