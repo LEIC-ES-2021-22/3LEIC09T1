@@ -46,7 +46,7 @@ As sigarra has no notification system in place, our product aims to differentiat
 | *Preconditions* | The user is logged in and has tuition fee notifications activated |
 | *Postconditions* | The referred notification type is deactivated  |
 | *Normal flow* |  1. The user accesses his notification's settings.   2. The system displays a list of notification types  3. The user selects "Tuition Fee Payment Limit"  4. The user slides a slider that deactivates that type of notification |
-| *Alternative flows and exceptions* |  2. [Change failure] If, in step 2 of the normal flow, the information is unobtainable, the system doesn't display the notification |
+| *Alternative flows and exceptions* | 1. [No Degree Exception] If, in step 3 the user is not enrolled in degree, the option to select this kind of notification is omitted |
 
 #### Change class notification parameters
 
