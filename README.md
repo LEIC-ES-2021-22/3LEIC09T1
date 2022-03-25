@@ -35,19 +35,18 @@ As sigarra has no notification system in place, our product aims to differentiat
 
 ### Use Cases
 
-(Use case UML)
+![Use case model](img/UseCaseModel.png)
 
-#### Notification
+#### Deactivate tuition fee payment limit notification
 
-|||
-| --- | --- |
-| *Name* | Notification |
-| *Actor* |  Application (UNI) |
-| *Description* | The application creates a notification to notify the user of a certain event. |
-| *Preconditions* | A certain event must be near to occur and notifications for this event have to be subscribed |
-| *Postconditions* | The notification subscription for the specific event expires and the system displays the appropiate notification. |
-| *Normal flow* | 1. The system  interprets the appropiate conditions to send a notification.<br>2.  The system displays the appropiate information to the user through a notification. <br> 3. The user presses the notification bar. <br> 4. The system displays the application menu relative to the notification's subject. |
-| *Alternative flows and exceptions* | 1. [Optional Use] In step 3 of the normal flow, if the user decides not to press the notification bar, the bar recedes leaving the option offered by step 3 unavailable. <br> 2. [Change failure] If, in step 2 of the normal flow, the information is unobtainable, the system doesn't display the notification |
+| *Name* | Deactivate tuition fee payment limit notification |
+|---|---|
+| *Actor* | User |
+| *Description* | The user deactivates notifications that are triggered when the payment limit for tuition fees is near |
+| *Preconditions* | The user is logged in and has tuition fee notifications activated |
+| *Postconditions* | The referred notification type is deactivated  |
+| *Normal flow* |  1. The user accesses his notification's settings.   2. The system displays a list of notification types  3. The user selects "Tuition Fee Payment Limit"  4. The user slides a slider that deactivates that type of notification |
+| *Alternative flows and exceptions* |  2. [Change failure] If, in step 2 of the normal flow, the information is unobtainable, the system doesn't display the notification |
 
 #### Change class notification parameters
 
