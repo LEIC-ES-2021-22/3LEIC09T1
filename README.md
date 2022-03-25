@@ -57,7 +57,7 @@ As sigarra has no notification system in place, our product aims to differentiat
 | *Alternative flows and exceptions* | [No enrolled courses failure] If, after step 2 of the normal flow, the user is not enrolled in the any course, the system displays a message stating that same situation. |
 
 
-#### Business rules
+### Business rules
 
 - The system should be developped using Flutter version 2.0.*
 - The system should be available and fully functional for both IOS and Android devices  
