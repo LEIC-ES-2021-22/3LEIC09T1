@@ -32,7 +32,7 @@ As sigarra has no notification system in place, our product aims to differentiat
 
 ![Use case model](img/UseCaseModel.png)
 
-#### Deactivate tuition fee payment limit notification
+**Deactivate tuition fee payment limit notification**
 
 | *Name* | Deactivate tuition fee payment limit notification |
 |---|---|
@@ -44,7 +44,7 @@ As sigarra has no notification system in place, our product aims to differentiat
 | *Alternative flows and exceptions* | 1. [No Degree Exception] If, in step 3 the user is not enrolled in degree, the option to select this kind of notification is omitted |
 
 
-#### Change class notification parameters
+**Change class notification parameters**
 
 |||
 | --- | --- |
@@ -56,8 +56,21 @@ As sigarra has no notification system in place, our product aims to differentiat
 | *Normal flow* | 1. The user accesses the notification settings. <br> 2. The user selects the class notifications definitions option. <br> 3. The user selects the option to edit classes with notifications active. <br> 4. Activates/deactivates notifications for each class shown. <br> 5. The system alters the class's notifications settings. |
 | *Alternative flows and exceptions* | [No enrolled courses failure] If, after step 2 of the normal flow, the user is not enrolled in the any course, the system displays a message stating that same situation. |
 
-
+<!-- 
 ### Business rules
 
 - The system should be developped using Flutter version 2.0.*
-- The system should be available and fully functional for both IOS and Android devices  
+- The system should be available and fully functional for both IOS and Android devices  -->
+
+### Domain Model
+
+![Domain Model](img/DomainModel.png)
+
+**Description**
+
+Our notification system supports both class/lecture notifications and tuition payment notifications. 
+- **Lectures** are defined by their start and end time, subject, room, between other characteristics. The Lecture class we will use is already implemented in the UNI app's source code.
+- **Tuitions** have a month they are associated to, as well as the date of limit of their payment, the cost/price and the course/programme it refers to.
+Both lectures and tuition payments can have their notifications active or inactive and have a antecedence associated. This information is stored by **NotificationPreference**. 
+The change of a notification's preferences/definitions by the user is done through the **NotificationManager**.
+
