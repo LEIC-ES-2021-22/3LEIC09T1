@@ -1,6 +1,30 @@
-# 3LEIC09T1
+# 3LEIC09T - Team UniNotif Development Report
 
-## Team UniNotif
+Welcome to the documentation pages of the UniNotif!
+
+You can find here detailed about the product, from a high-level vision to low-level implementation decisions, a kind of Software Development Report, organized by discipline (as of RUP): 
+
+* Business modeling 
+  * [Product Vision](https://github.com/LEIC-ES-2021-22/templates/blob/main/docs/ProductVision.md)
+  * [Elevator Pitch](https://github.com/LEIC-ES-2021-22/templates/blob/main/docs/ElevatorPitch.md)
+* [Requirements](https://github.com/LEIC-ES-2021-22/templates/blob/main/docs/requirements.md)
+  * [Use Case Model](https://github.com/LEIC-ES-2021-22/templates/blob/main/docs/requirements.md#Use-case-model)
+  * [User stories](https://github.com/LEIC-ES-2021-22/templates/blob/main/docs/requirements.md#User-stories)
+  * [Domain model](https://github.com/LEIC-ES-2021-22/templates/blob/main/docs/requirements.md#Domain-model)
+* [Architecture and Design](https://github.com/LEIC-ES-2021-22/templates/blob/main/docs/ArchitectureAndDesign.md)
+  * [Logical architecture]
+  * [Physical architecture]
+  * [Vertical prototype]
+* [Implementation]
+* [Test]
+* [Configuration and change management]
+* [Project management]
+
+So far, contributions are exclusively made by the initial team, but we hope to open them to the community, in all areas and topics: requirements, technologies, development, experimentation, testing, etc.
+
+Please contact us! 
+
+Thank you!
 
 ### Members
 
@@ -10,11 +34,13 @@
 - Rui Moreira (201906355)
 - José Costa (202004823)
 
+---
+
 ## Product Vision
 
-Our project aims to provide members of *Faculdade de Engenharia Universidade do Porto* with a variety of notifications regarding specific events related to their degree, such as classes or tuition payment limits.
+Our project aims to provide members of *FEUP* with reminders for important or routinely events of their academic life through a variety of notifications implemented into UNI, such as classes or tuition payment limits alerts. 
 
-As sigarra has no notification system in place, our product aims to differentiate UNI by adding one. We believe this feature will aid the user not to forget events within its interest, as well as improve the app's usability and overall user experience.
+As sigarra has no notification system in place, our product intends to differentiate UNI by adding one. We believe this feature will aid the user not to forget events within its interest, as well as improve the app's usability and overall user experience.
 
 ### Main Features
 
@@ -25,6 +51,8 @@ As sigarra has no notification system in place, our product aims to differentiat
 
 - Student's timetable from sigarra;
 - Student's billing information from sigarra.
+
+---
 
 ## Requirements
 
@@ -74,7 +102,21 @@ Our notification system supports both class/lecture notifications and tuition pa
 Both lectures and tuition payments can have their notifications active or inactive and have a antecedence associated. This information is stored by **NotificationPreference**. 
 The change of a notification's preferences/definitions by the user is done through the **NotificationManager**.
 
+---
+
 ## Architecture and Design
+
+### Logical Architecture
+
+![Package diagram](img/LogicalArchitecture.png)
+
+
+### Physical Architecture
+
+In our feature, we will be using the Flutter framework and a SQLite database as those are the ones already present in the UNI project and fulfill our needs perfectly.
+
+![Deployment diagram](img/PhysicalArchitecture.png)
+
 
 ### Vertical prototype
 We have chosen to implement the front-end of the notification settings menu as a demonstration of our capacity to use Flutter.
@@ -82,4 +124,4 @@ This menu has switches to all the notification types. When a certain king of not
 
 Notifications turned off           | Notifications turned on                   
 :---------------------------------:|:-------------------------------------------:
-![](img/vertical-prototype-1.png)  |  ![](img/vertical-prototype-2.png)
+![Print of vertical prototype 1](img/vertical-prototype-1.png)  |  ![Print of vertical prototype 2](img/vertical-prototype-2.png)
