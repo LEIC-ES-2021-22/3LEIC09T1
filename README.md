@@ -80,7 +80,7 @@ The change of a notification's preferences/definitions by the user is done throu
 We have chosen to implement the front-end of the notification settings menu as a demonstration of our capacity to use Flutter.
 This menu has switches to all the notification types. When a certain king of notification is activated a slider apperars so that the user can choose the precedence of that kind of notification.
 
-![vertical-prototype-1](/img/vertical-prototype-1.png)
+![vertical-prototype-1](img/vertical-prototype-1.png)
 
-![vertical-prototype-2](/img/vertical-prototype-2.png)
+![vertical-prototype-2](img/vertical-prototype-2.png)
 
