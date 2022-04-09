@@ -82,4 +82,4 @@ This menu has switches to all the notification types. When a certain king of not
 
 Notificações desligadas            | Notificação Ligada                   
 :---------------------------------:|:-------------------------------------------:
-![](img/vertical-prototype-1.png)  |  ![](img/vertical-prototype-2.png))
+![](img/vertical-prototype-1.png)  |  ![](img/vertical-prototype-2.png)
