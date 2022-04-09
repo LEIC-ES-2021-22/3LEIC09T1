@@ -74,3 +74,9 @@ Our notification system supports both class/lecture notifications and tuition pa
 Both lectures and tuition payments can have their notifications active or inactive and have a antecedence associated. This information is stored by **NotificationPreference**. 
 The change of a notification's preferences/definitions by the user is done through the **NotificationManager**.
 
+## Architecture and Design
+
+### Vertical prototype
+We have chosen to implement the front-end of the notification settings menu as a demonstration of our capacity to use Flutter.
+This menu has switches to all the notification types. When a certain king of notification is activated a slider apperars so that the user can choose the precedence of that kind of notification.
+

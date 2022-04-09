@@ -26,6 +26,13 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
           onChanged: (newState) { 
             setState(() => _isOpen[0] = newState);
           },
+        ),
+        NotificationSetting(
+          'Pagamento de propinas',
+          switched: _isOpen[1],
+          onChanged: (newState) { 
+            setState(() => _isOpen[1] = newState);
+          },
         )
       ],
     );
