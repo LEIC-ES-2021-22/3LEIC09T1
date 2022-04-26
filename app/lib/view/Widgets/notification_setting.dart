@@ -53,11 +53,12 @@ class _NotificationSettingsState extends State<NotificationSetting> {
           value: _timerSliderValue,
           min: 0,
           max: 100,
-          divisions: 10,
+          divisions: 20,
           //label: _timerSliderValue.round().toString(),
           onChanged: (double value) {
             setState(() {
-              _timerSliderValue = value;
+              _timerSliderValue = value.roundToDouble();
+              //the round fixes weird glitch when the value hits 55
             });
           },
           activeColor: Colors.brown[300],
@@ -72,7 +73,7 @@ class _NotificationSettingsState extends State<NotificationSetting> {
             .add(Text("$_timerSliderValue minutos antes da próxima aula."));
       } else {
         columnChildren.add(Text(
-            "$_timerSliderValue dias antes do próximo pagamento de serviços."));
+            "$_timerSliderValue dias antes do prazo do próximo pagamento."));
       }
     }
 
