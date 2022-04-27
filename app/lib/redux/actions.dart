@@ -10,6 +10,8 @@ import 'package:uni/model/home_page_model.dart';
 
 import '../model/entities/bus_stop.dart';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 class SaveLoginDataAction {
   Session session;
   SaveLoginDataAction(this.session);
@@ -49,7 +51,6 @@ class SetScheduleStatusAction {
   RequestStatus status;
   SetScheduleStatusAction(this.status);
 }
-
 
 class SetInitialStoreStateAction {
   SetInitialStoreStateAction();
@@ -163,4 +164,9 @@ class SetExamFilter {
 class SetUserFaculties {
   List<String> faculties;
   SetUserFaculties(this.faculties);
+}
+
+class SetNotificationService {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  SetNotificationService(this.flutterLocalNotificationsPlugin);
 }
