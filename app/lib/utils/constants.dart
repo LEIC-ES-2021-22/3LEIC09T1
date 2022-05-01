@@ -25,3 +25,29 @@ const faculties = [
   'fpceup',
   'icbas'
 ];
+
+enum NotificationChannel {
+  classNotif,
+  tuitionNotif
+}
+
+extension NotificationChannelData on NotificationChannel {
+  static const channelIds = {
+    NotificationChannel.classNotif: '0',
+    NotificationChannel.tuitionNotif: '1'
+  };
+
+  static const channelNames = {
+    NotificationChannel.classNotif: 'Aulas',
+    NotificationChannel.tuitionNotif: 'Pagamento de propinas'
+  };
+
+  static const channelDescriptions = {
+    NotificationChannel.classNotif: 'Informam a hora e sala em que decorrerão as proximas aulas',
+    NotificationChannel.tuitionNotif: 'Informam a data da próxima propina a ser paga'
+  };
+
+  String get channelName => channelNames[this];
+  String get channelId => channelIds[this];
+  String get channelDesc => channelDescriptions[this];
+}

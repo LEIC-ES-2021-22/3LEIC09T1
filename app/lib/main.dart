@@ -23,11 +23,10 @@ import 'package:uni/view/Pages/splash_page_view.dart';
 import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 import 'controller/on_start_up.dart';
 import 'model/schedule_page_model.dart';
-
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 /// Stores the state of the app
 final Store<AppState> store = Store<AppState>(appReducers,
@@ -53,6 +52,7 @@ setupNotifications() {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OnStartUp.onStart(store);
+  tz.initializeTimeZones();
   await setupNotifications();
   await SentryFlutter.init(
     (options) {
