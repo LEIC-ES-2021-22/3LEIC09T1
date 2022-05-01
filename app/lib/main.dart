@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry/sentry.dart';
@@ -22,12 +23,13 @@ import 'package:uni/view/Pages/splash_page_view.dart';
 import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 import 'controller/on_start_up.dart';
 import 'model/schedule_page_model.dart';
 
 /// Stores the state of the app
-final Store<AppState> state = Store<AppState>(appReducers,
+final Store<AppState> store = Store<AppState>(appReducers,
     /* Function defined in the reducers file */
     initialState: AppState(null),
     middleware: [generalMiddleware]);
@@ -36,8 +38,22 @@ SentryEvent beforeSend(SentryEvent event) {
   return event.level == SentryLevel.info ? event : null;
 }
 
+setupNotifications() {
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('mipmap/ic_launcher');
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+  store.dispatch(SetNotificationService(FlutterLocalNotificationsPlugin()));
+  store.state.content['flutterLocalNotificationsPlugin']
+      .initialize(initializationSettings);
+}
+
 Future<void> main() async {
-  OnStartUp.onStart(state);
+  WidgetsFlutterBinding.ensureInitialized();
+  OnStartUp.onStart(store);
+  tz.initializeTimeZones();
+  await setupNotifications();
   await SentryFlutter.init(
     (options) {
       options.dsn =
