@@ -8,9 +8,11 @@ import 'package:uni/controller/load_info.dart';
 import 'package:uni/controller/load_static/terms_and_conditions.dart';
 import 'package:uni/controller/local_storage/app_bus_stop_database.dart';
 import 'package:uni/controller/local_storage/app_courses_database.dart';
+import 'package:uni/controller/local_storage/app_database.dart';
 import 'package:uni/controller/local_storage/app_exams_database.dart';
 import 'package:uni/controller/local_storage/app_last_user_info_update_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
+import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
@@ -30,6 +32,7 @@ import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
@@ -81,7 +84,6 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
       store.dispatch(SaveLoginDataAction(session));
       if (session.authenticated) {
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
-        await loadUserInfoToState(store);
 
         /// Faculties chosen in the dropdown
         store.dispatch(SetUserFaculties(faculties));
@@ -89,6 +91,8 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
           AppSharedPreferences.savePersistentUserInfo(
               username, password, faculties);
         }
+
+        await loadUserInfoToState(store);
         usernameController.clear();
         passwordController.clear();
         await acceptTermsAndConditions();
@@ -282,22 +286,20 @@ ThunkAction<AppState> getUserSchedule(
   };
 }
 
-ThunkAction<AppState> getRestaurantsFromFetcher(Completer<Null> action){
-  return (Store<AppState> store) async{
-    try{
+ThunkAction<AppState> getRestaurantsFromFetcher(Completer<Null> action) {
+  return (Store<AppState> store) async {
+    try {
       store.dispatch(SetRestaurantsStatusAction(RequestStatus.busy));
 
       final List<Restaurant> restaurants =
-                      await RestaurantFetcherHtml().getRestaurants(store);
+          await RestaurantFetcherHtml().getRestaurants(store);
       // Updates local database according to information fetched -- Restaurants
       final RestaurantDatabase db = RestaurantDatabase();
       db.saveRestaurants(restaurants);
-      db.restaurants(day:null);
+      db.restaurants(day: null);
       store.dispatch(SetRestaurantsAction(restaurants));
       store.dispatch(SetRestaurantsStatusAction(RequestStatus.successful));
-
-
-    } catch(e){
+    } catch (e) {
       Logger().e('Failed to get Restaurants: ${e.toString()}');
       store.dispatch(SetRestaurantsStatusAction(RequestStatus.failed));
     }
@@ -549,5 +551,16 @@ ThunkAction<AppState> updateStateBasedOnLocalTime() {
     final AppLastUserInfoUpdateDatabase db = AppLastUserInfoUpdateDatabase();
     final DateTime savedTime = await db.getLastUserInfoUpdateTime();
     store.dispatch(SetLastUserInfoUpdateTime(savedTime));
+  };
+}
+
+ThunkAction<AppState> updateStateBasedOnLocalUserNotificationPreferences() {
+  return (Store<AppState> store) async {
+    final AppNotificationPreferencesDatabase db =
+        AppNotificationPreferencesDatabase();
+    db.saveNewPreferences(
+        [NotificationPreference(true, 10, 'lectureNotification')]);
+    final List<NotificationPreference> preferences = await db.preferences();
+    store.dispatch(SetUserNotificationPreferences(preferences));
   };
 }

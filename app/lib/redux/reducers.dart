@@ -218,3 +218,10 @@ AppState setUserFaculties(AppState state, SetUserFaculties action) {
   Logger().i('setting user faculty(ies) ' + action.faculties.toString());
   return state.cloneAndUpdateValue('userFaculties', action.faculties);
 }
+
+AppState setUserNotificationPreferences(AppState state,
+    SetUserNotificationPreferences action) {
+  Logger().i('setting user notification preferences');
+  return state.cloneAndUpdateValue('userNotificationPreferences',
+      action.preferences);
+}

@@ -94,6 +94,7 @@ void loadLocalUserInfoToState(store) async {
   store.dispatch(SetExamFilter(await AppSharedPreferences.getFilteredExams()));
   store.dispatch(
       SetUserFaculties(await AppSharedPreferences.getUserFaculties()));
+  store.dispatch(updateStateBasedOnLocalUserNotificationPreferences());
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
