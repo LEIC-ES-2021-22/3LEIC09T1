@@ -39,7 +39,7 @@ Thank you!
 
 Our project aims to provide members of *FEUP* with reminders for important or routinely events of their academic life through a variety of notifications implemented into UNI, such as classes or tuition payment limits alerts. 
 
-As sigarra has no notification system in place, our product intends to differentiate UNI by adding one. We believe this feature will aid the user not to forget events within its interest, as well as improve the app's usability and overall user experience.
+Our product intends to differentiate UNI from Sigarra by a notification system with different capabilities. We believe this feature will aid the user not to forget events within its interest, as well as improve the app's overall user experience.
 
 ### Main Features
 
