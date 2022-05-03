@@ -66,6 +66,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setRestaurantsAction(state, action);
   } else if (action is SetNotificationService) {
     return setNotificationService(state, action);
+  } else if (action is SetUserNotificationPreferences) {
+    return setUserNotificationPreferences(state, action);
   }
   return state;
 }
@@ -230,7 +232,8 @@ AppState setNotificationService(AppState state, SetNotificationService action) {
 
 AppState setUserNotificationPreferences(
     AppState state, SetUserNotificationPreferences action) {
-  Logger().i('setting user notification preferences');
+  Logger().i(
+      'setting user notification preferences ' + action.preferences.toString());
   return state.cloneAndUpdateValue(
       'userNotificationPreferences', action.preferences);
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:logger/logger.dart';
 import 'package:uni/controller/local_storage/app_database.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:sqflite/sqflite.dart';

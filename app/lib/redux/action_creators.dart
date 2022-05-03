@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -8,7 +9,6 @@ import 'package:uni/controller/load_info.dart';
 import 'package:uni/controller/load_static/terms_and_conditions.dart';
 import 'package:uni/controller/local_storage/app_bus_stop_database.dart';
 import 'package:uni/controller/local_storage/app_courses_database.dart';
-import 'package:uni/controller/local_storage/app_database.dart';
 import 'package:uni/controller/local_storage/app_exams_database.dart';
 import 'package:uni/controller/local_storage/app_last_user_info_update_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
@@ -19,6 +19,8 @@ import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
+import 'package:uni/controller/notifications/notification_build.dart';
+import 'package:uni/controller/notifications/notification_scheduler.dart';
 import 'package:uni/controller/parsers/parser_courses.dart';
 import 'package:uni/controller/parsers/parser_exams.dart';
 import 'package:uni/controller/parsers/parser_fees.dart';
@@ -54,6 +56,7 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
         await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
         action?.complete();
+        NotificationScheduler(store).scheduleAll(); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
         action?.completeError(RequestStatus.failed);
@@ -91,11 +94,11 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
           AppSharedPreferences.savePersistentUserInfo(
               username, password, faculties);
         }
-
         await loadUserInfoToState(store);
         usernameController.clear();
         passwordController.clear();
         await acceptTermsAndConditions();
+        NotificationScheduler(store).scheduleAll(); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
       }
@@ -558,8 +561,8 @@ ThunkAction<AppState> updateStateBasedOnLocalUserNotificationPreferences() {
   return (Store<AppState> store) async {
     final AppNotificationPreferencesDatabase db =
         AppNotificationPreferencesDatabase();
-    db.saveNewPreferences(
-        [NotificationPreference(true, 10, 'lectureNotification')]);
+    await db.saveNewPreferences(
+        [NotificationPreference(true, 10, 'classNotification')]);
     final List<NotificationPreference> preferences = await db.preferences();
     store.dispatch(SetUserNotificationPreferences(preferences));
   };

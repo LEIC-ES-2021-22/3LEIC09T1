@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 import 'package:tuple/tuple.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/controller/local_storage/image_offline_storage.dart';
@@ -97,6 +98,7 @@ void loadLocalUserInfoToState(store) async {
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
+    Logger().i('Entered thois');
     store.dispatch(updateStateBasedOnLocalUserNotificationPreferences());
     store.dispatch(updateStateBasedOnLocalProfile());
     store.dispatch(updateStateBasedOnLocalUserExams());
