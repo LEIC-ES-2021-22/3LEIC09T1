@@ -170,6 +170,7 @@ class SetUserFaculties {
 class SetNotificationService {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   SetNotificationService(this.flutterLocalNotificationsPlugin);
+}
 
 class SetUserNotificationPreferences {
   List<NotificationPreference> preferences;

@@ -226,10 +226,11 @@ AppState setNotificationService(AppState state, SetNotificationService action) {
       action.flutterLocalNotificationsPlugin.toString());
   return state.cloneAndUpdateValue('flutterLocalNotificationsPlugin',
       action.flutterLocalNotificationsPlugin);
+}
 
-AppState setUserNotificationPreferences(AppState state,
-    SetUserNotificationPreferences action) {
+AppState setUserNotificationPreferences(
+    AppState state, SetUserNotificationPreferences action) {
   Logger().i('setting user notification preferences');
-  return state.cloneAndUpdateValue('userNotificationPreferences',
-      action.preferences);
+  return state.cloneAndUpdateValue(
+      'userNotificationPreferences', action.preferences);
 }
