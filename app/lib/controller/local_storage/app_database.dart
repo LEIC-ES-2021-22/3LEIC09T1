@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
@@ -11,14 +12,18 @@ import 'package:synchronized/synchronized.dart';
 class AppDatabase {
   /// An instance of this database.
   Database _db;
+
   /// The name of this database.
   String name;
+
   /// A list of commands to be executed on database creation.
   List<String> commands;
   // A lock that synchronizes all database insertions.
   static Lock lock = Lock();
+
   /// A function that is called when the [version] changes.
   final OnDatabaseVersionChangeFn onUpgrade;
+
   /// The version of this database.
   final int version;
 
@@ -54,6 +59,7 @@ class AppDatabase {
     // Open or create the database at the given path
     final appFeupDatabase = await openDatabase(path,
         version: version, onCreate: _createDatabase, onUpgrade: onUpgrade);
+
     return appFeupDatabase;
   }
 

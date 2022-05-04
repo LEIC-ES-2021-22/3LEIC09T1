@@ -68,6 +68,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setNotificationService(state, action);
   } else if (action is SetUserNotificationPreferences) {
     return setUserNotificationPreferences(state, action);
+  } else if (action is SetNotificationsData) {
+    return setNotificationsData(state, action);
   }
   return state;
 }
@@ -236,4 +238,11 @@ AppState setUserNotificationPreferences(
       'setting user notification preferences ' + action.preferences.toString());
   return state.cloneAndUpdateValue(
       'userNotificationPreferences', action.preferences);
+}
+
+AppState setNotificationsData(AppState state, SetNotificationsData action) {
+  Logger()
+      .i('setting notifications data ' + action.notificationsData.toString());
+  return state.cloneAndUpdateValue(
+      'notificationsData', action.notificationsData);
 }

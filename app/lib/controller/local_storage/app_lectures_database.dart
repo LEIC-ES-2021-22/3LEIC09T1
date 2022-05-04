@@ -41,8 +41,6 @@ class AppLecturesDatabase extends AppDatabase {
     // Query the table for All The Dogs.
     final List<Map<String, dynamic>> maps = await db.query('lectures');
 
-    Logger().i('Lectures map:' + maps.toString());
-
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return Lecture.fromHtml(

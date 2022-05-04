@@ -10,7 +10,7 @@ import 'package:uni/model/entities/notification_preference.dart';
 /// See the [NotificationPreference] class to see what is stored.
 class AppNotificationPreferencesDatabase extends AppDatabase {
   static final createScript =
-      '''CREATE TABLE notification_preferences(isActive BOOLEAN, antecedence INTEGER, notificationType TEXT UNIQUE)''';
+      '''CREATE TABLE notification_preferences(isActive BOOLEAN NOT NULL, antecedence INTEGER NOT NULL, notificationType TEXT NOT NULL UNIQUE)''';
 
   AppNotificationPreferencesDatabase()
       : super(
@@ -34,12 +34,6 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
     // Query the table for All The Preferences.
     final List<Map<String, dynamic>> maps =
         await db.query('notification_preferences');
-
-    Logger().i('THIS IS WHAT IS RETURNING:' +
-        List.generate(maps.length, (i) {
-          return NotificationPreference.fromHtml(maps[i]['isActive'],
-              maps[i]['antecedence'], maps[i]['notificationType']);
-        }).toString());
 
     // Convert the List<Map<String, dynamic>
     // into a List<NotificationPreference>.

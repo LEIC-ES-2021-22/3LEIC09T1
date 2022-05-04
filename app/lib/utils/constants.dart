@@ -35,13 +35,13 @@ extension NotificationTypeData on NotificationType {
   };
 
   static const channelNames = {
-    NotificationType.classNotif: 'Aulas',
-    NotificationType.tuitionNotif: 'Pagamento de propinas'
+    NotificationType.classNotif: 'Notificações de Aulas',
+    NotificationType.tuitionNotif: 'Notificações de Pagamento de propinas'
   };
 
   static const channelDescriptions = {
     NotificationType.classNotif:
-        'Informam a hora e sala em que decorrerão as proximas aulas',
+        'Informam a hora e sala em que decorrerão as próximas aulas',
     NotificationType.tuitionNotif:
         'Informam a data da próxima propina a ser paga'
   };

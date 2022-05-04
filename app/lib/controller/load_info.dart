@@ -98,7 +98,6 @@ void loadLocalUserInfoToState(store) async {
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
-    store.dispatch(updateStateBasedOnLocalUserNotificationPreferences());
     store.dispatch(updateStateBasedOnLocalProfile());
     store.dispatch(updateStateBasedOnLocalUserExams());
     store.dispatch(updateStateBasedOnLocalUserLectures());
@@ -129,4 +128,14 @@ Future<File> loadProfilePic(Store<AppState> store) {
     headers['cookie'] = store.state.content['session'].cookies;
   }
   return retrieveImage(url, headers);
+}
+
+Future<void> loadNotificationData(Store<AppState> store) async {
+  final Tuple2<String, String> userPersistentInfo =
+      await AppSharedPreferences.getPersistentUserInfo();
+  if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
+    await store.dispatch(updateStateBasedOnLocalNotificationsData());
+    await store.dispatch(updateStateBasedOnLocalUserNotificationPreferences());
+    await store.dispatch(updateStateBasedOnLocalUserLectures());
+  }
 }
