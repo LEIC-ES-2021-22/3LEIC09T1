@@ -98,7 +98,6 @@ void loadLocalUserInfoToState(store) async {
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
-    Logger().i('Entered thois');
     store.dispatch(updateStateBasedOnLocalUserNotificationPreferences());
     store.dispatch(updateStateBasedOnLocalProfile());
     store.dispatch(updateStateBasedOnLocalUserExams());

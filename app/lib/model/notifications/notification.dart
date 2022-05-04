@@ -4,7 +4,17 @@ class Notification {
   int id;
   String body;
   String title;
-  NotificationChannel notificationChannel;
+  NotificationType notificationChannel;
 
   Notification(this.id, this.body, this.title, this.notificationChannel);
+
+  @override
+  String toString() {
+    return 'ID:' +
+        this.id.toString() +
+        '  Title:' +
+        this.title +
+        '  Body:' +
+        this.body;
+  }
 }

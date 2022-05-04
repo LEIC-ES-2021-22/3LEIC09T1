@@ -26,25 +26,24 @@ const faculties = [
   'icbas'
 ];
 
-enum NotificationChannel {
-  classNotif,
-  tuitionNotif
-}
+enum NotificationType { classNotif, tuitionNotif }
 
-extension NotificationChannelData on NotificationChannel {
+extension NotificationTypeData on NotificationType {
   static const channelIds = {
-    NotificationChannel.classNotif: '0',
-    NotificationChannel.tuitionNotif: '1'
+    NotificationType.classNotif: '0',
+    NotificationType.tuitionNotif: '1'
   };
 
   static const channelNames = {
-    NotificationChannel.classNotif: 'Aulas',
-    NotificationChannel.tuitionNotif: 'Pagamento de propinas'
+    NotificationType.classNotif: 'Aulas',
+    NotificationType.tuitionNotif: 'Pagamento de propinas'
   };
 
   static const channelDescriptions = {
-    NotificationChannel.classNotif: 'Informam a hora e sala em que decorrerão as proximas aulas',
-    NotificationChannel.tuitionNotif: 'Informam a data da próxima propina a ser paga'
+    NotificationType.classNotif:
+        'Informam a hora e sala em que decorrerão as proximas aulas',
+    NotificationType.tuitionNotif:
+        'Informam a data da próxima propina a ser paga'
   };
 
   String get channelName => channelNames[this];

@@ -21,6 +21,7 @@ import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
 import 'package:uni/controller/notifications/notification_build.dart';
 import 'package:uni/controller/notifications/notification_scheduler.dart';
+import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/controller/parsers/parser_courses.dart';
 import 'package:uni/controller/parsers/parser_exams.dart';
 import 'package:uni/controller/parsers/parser_fees.dart';
@@ -56,7 +57,7 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
         await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
         action?.complete();
-        NotificationScheduler(store).scheduleAll(); // Schedule notifications
+        notificationSetUp(store); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
         action?.completeError(RequestStatus.failed);
@@ -98,7 +99,7 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
         usernameController.clear();
         passwordController.clear();
         await acceptTermsAndConditions();
-        NotificationScheduler(store).scheduleAll(); // Schedule notifications
+        notificationSetUp(store); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
       }
@@ -156,6 +157,7 @@ ThunkAction<AppState> updateStateBasedOnLocalUserLectures() {
   return (Store<AppState> store) async {
     final AppLecturesDatabase db = AppLecturesDatabase();
     final List<Lecture> lecs = await db.lectures();
+    Logger().i('Lecs: ' + lecs.toString());
     store.dispatch(SetScheduleAction(lecs));
   };
 }

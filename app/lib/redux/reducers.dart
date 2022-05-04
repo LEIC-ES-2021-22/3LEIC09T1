@@ -98,7 +98,7 @@ AppState setExamsStatus(AppState state, SetExamsStatusAction action) {
 }
 
 AppState setSchedule(AppState state, SetScheduleAction action) {
-  Logger().i('setting schedule: ' + action.lectures.length.toString());
+  Logger().i('setting schedule: ' + action.lectures.toString());
   return state.cloneAndUpdateValue('schedule', action.lectures);
 }
 
