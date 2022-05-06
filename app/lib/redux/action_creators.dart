@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -8,10 +9,10 @@ import 'package:uni/controller/load_info.dart';
 import 'package:uni/controller/load_static/terms_and_conditions.dart';
 import 'package:uni/controller/local_storage/app_bus_stop_database.dart';
 import 'package:uni/controller/local_storage/app_courses_database.dart';
-import 'package:uni/controller/local_storage/app_database.dart';
 import 'package:uni/controller/local_storage/app_exams_database.dart';
 import 'package:uni/controller/local_storage/app_last_user_info_update_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
+import 'package:uni/controller/local_storage/app_notification_data_database.dart';
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
@@ -19,6 +20,9 @@ import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
+import 'package:uni/controller/notifications/notification_build.dart';
+import 'package:uni/controller/notifications/notification_scheduler.dart';
+import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/controller/parsers/parser_courses.dart';
 import 'package:uni/controller/parsers/parser_exams.dart';
 import 'package:uni/controller/parsers/parser_fees.dart';
@@ -32,6 +36,7 @@ import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
@@ -51,9 +56,13 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
           await NetworkRouter.login(username, password, faculty, true);
       store.dispatch(SaveLoginDataAction(session));
       if (session.authenticated) {
-        await loadRemoteUserInfoToState(store);
+        // await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
         action?.complete();
+
+        // Notifications
+        // await loadNotificationData(store);
+        notificationSetUp(store); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
         action?.completeError(RequestStatus.failed);
@@ -91,11 +100,14 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
           AppSharedPreferences.savePersistentUserInfo(
               username, password, faculties);
         }
-
         await loadUserInfoToState(store);
         usernameController.clear();
         passwordController.clear();
         await acceptTermsAndConditions();
+
+        // Notifications
+        await loadNotificationData(store);
+        notificationSetUp(store); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
       }
@@ -558,9 +570,16 @@ ThunkAction<AppState> updateStateBasedOnLocalUserNotificationPreferences() {
   return (Store<AppState> store) async {
     final AppNotificationPreferencesDatabase db =
         AppNotificationPreferencesDatabase();
-    db.saveNewPreferences(
-        [NotificationPreference(true, 10, 'lectureNotification')]);
     final List<NotificationPreference> preferences = await db.preferences();
     store.dispatch(SetUserNotificationPreferences(preferences));
+  };
+}
+
+ThunkAction<AppState> updateStateBasedOnLocalNotificationsData() {
+  return (Store<AppState> store) async {
+    final AppNotificationDataDatabase db = AppNotificationDataDatabase();
+    final List<NotificationData> notificationsData =
+        await db.notificationsData();
+    store.dispatch(SetNotificationsData(notificationsData));
   };
 }

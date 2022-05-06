@@ -2,6 +2,7 @@ import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
@@ -175,4 +176,9 @@ class SetNotificationService {
 class SetUserNotificationPreferences {
   List<NotificationPreference> preferences;
   SetUserNotificationPreferences(this.preferences);
+}
+
+class SetNotificationsData {
+  List<NotificationData> notificationsData;
+  SetNotificationsData(this.notificationsData);
 }

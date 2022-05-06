@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:logger/logger.dart';
 import 'package:uni/controller/local_storage/app_database.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uni/model/entities/notification_preference.dart';
@@ -9,7 +10,7 @@ import 'package:uni/model/entities/notification_preference.dart';
 /// See the [NotificationPreference] class to see what is stored.
 class AppNotificationPreferencesDatabase extends AppDatabase {
   static final createScript =
-      '''CREATE TABLE notification_preferences(isActive BOOLEAN, antecedence INTEGER, notificationType TEXT UNIQUE)''';
+      '''CREATE TABLE notification_preferences(isActive BOOLEAN NOT NULL, antecedence INTEGER NOT NULL, notificationType TEXT NOT NULL UNIQUE)''';
 
   AppNotificationPreferencesDatabase()
       : super(
@@ -17,8 +18,7 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
             [
               createScript,
             ],
-            // onUpgrade: migrate,
-            version: 3);
+            version: 1);
 
   /// Replaces all of the data in this database with [preferences].
   saveNewPreferences(List<NotificationPreference> preferences) async {
@@ -31,7 +31,7 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
     // Get a reference to the database
     final Database db = await this.getDatabase();
 
-    // Query the table for All The Dogs.
+    // Query the table for All The Preferences.
     final List<Map<String, dynamic>> maps =
         await db.query('notification_preferences');
 
