@@ -130,6 +130,7 @@ Notifications turned off           | Notifications turned on
 
 
 ### 1st iteration
+[Release](https://github.com/LEIC-ES-2021-22/3LEIC09T1/releases/tag/Iteration1)
 
 On this first iteration, the work went in general smoothly, and there was a team effort to see the objectives done.
 
