@@ -7,17 +7,19 @@ You can find here detailed about the product, from a high-level vision to low-le
 <!-- * Business modeling  -->
 * [Product Vision](#product-vision)
   <!-- * [Elevator Pitch](#Elevator-Pitch) -->
-* [Requirements](#requirements)
-  * [Use Case Model](#use-case-model)
-  * [Domain model](#domain-model)
-* [Architecture and Design](#architecture-and-design)
-  * [Logical architecture](#logical-architecture)
-  * [Physical architecture](#physical-architecture)
-  * [Vertical prototype](#vertical-prototype)
-* [Implementation]
-* [Test]
-* [Configuration and change management]
-* [Project management]
+- [3LEIC09T - Team UniNotif Development Report](#3leic09t---team-uninotif-development-report)
+    - [Members](#members)
+  - [Product Vision](#product-vision)
+    - [Main Features](#main-features)
+    - [API's to use](#apis-to-use)
+  - [Requirements](#requirements)
+    - [Use Case Model](#use-case-model)
+    - [Domain Model](#domain-model)
+  - [Architecture and Design](#architecture-and-design)
+    - [Logical Architecture](#logical-architecture)
+    - [Physical Architecture](#physical-architecture)
+    - [Vertical prototype](#vertical-prototype)
+    - [1st iteration](#1st-iteration)
 
 So far, contributions are exclusively made by the initial team, but we hope to open them to the community, in all areas and topics: requirements, technologies, development, experimentation, testing, etc.
 
@@ -124,3 +126,16 @@ This menu has switches to all the notification types. When a certain king of not
 Notifications turned off           | Notifications turned on                   
 :---------------------------------:|:-------------------------------------------:
 ![Print of vertical prototype 1](img/vertical-prototype-1.png)  |  ![Print of vertical prototype 2](img/vertical-prototype-2.png)
+
+
+
+### 1st iteration
+
+On this first iteration, the work went in general smoothly, and there was a team effort to see the objectives done.
+
+However, 
+
+To some members, the test gimmicks are still somewhat troubling to figure out. Also, the original database is hard to comprehend and has no ids associated, which makes it difficult to establish relations to other to be defined databases
+
+
+![Print of first iteration](img/incremento1.png)
