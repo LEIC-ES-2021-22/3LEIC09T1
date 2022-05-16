@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/rendering.dart';
 import 'package:logger/logger.dart';
 
@@ -24,8 +27,13 @@ class Lecture {
   int day;
   int blocks;
   int startTimeSeconds;
-  int id;
-  bool notificationActive;
+
+  int get id {
+    //We assume that there is only one class of a given type in a given day
+    return md5.convert(utf8.encode('$subject-$typeClass-$day')).bytes.reduce(
+            (value, element) => value += element
+    ) % 1000;
+  }
 
   /// Creates an instance of the class [Lecture].
   Lecture(
@@ -39,9 +47,7 @@ class Lecture {
       int startTimeHours,
       int startTimeMinutes,
       int endTimeHours,
-      int endTimeMinutes,
-      int id,
-      bool notificationActive) {
+      int endTimeMinutes) {
     this.subject = subject;
     this.typeClass = typeClass;
     this.room = room;
@@ -57,8 +63,6 @@ class Lecture {
     this.endTime = endTimeHours.toString().padLeft(2, '0') +
         'h' +
         endTimeMinutes.toString().padLeft(2, '0');
-    this.id = id;
-    this.notificationActive = notificationActive;
   }
 
   factory Lecture.fromApi(
@@ -69,9 +73,7 @@ class Lecture {
       int blocks,
       String room,
       String teacher,
-      String classNumber,
-      {int id = null,
-      bool notificationActive = null}) {
+      String classNumber) {
     final startTimeHours = (startTimeSeconds ~/ 3600);
     final startTimeMinutes = ((startTimeSeconds % 3600) ~/ 60);
     final endTimeSeconds = 60 * 30 * blocks + startTimeSeconds;
@@ -88,9 +90,7 @@ class Lecture {
         startTimeHours,
         startTimeMinutes,
         endTimeHours,
-        endTimeMinutes,
-        id,
-        notificationActive);
+        endTimeMinutes);
     lecture.startTimeSeconds = startTimeSeconds;
     return lecture;
   }
@@ -103,9 +103,7 @@ class Lecture {
       int blocks,
       String room,
       String teacher,
-      String classNumber,
-      {int id = null,
-      int notificationActive = null}) {
+      String classNumber) {
     final startTimeHours = int.parse(startTime.substring(0, 2));
     final startTimeMinutes = int.parse(startTime.substring(3, 5));
     final endTimeHours =
@@ -122,9 +120,7 @@ class Lecture {
         startTimeHours,
         startTimeMinutes,
         endTimeHours,
-        endTimeMinutes,
-        id,
-        notificationActive == 1 ? true : false);
+        endTimeMinutes);
   }
 
   /// Clones a lecture from the api.
@@ -199,9 +195,4 @@ class Lecture {
       this.day == o.day &&
       this.blocks == o.blocks &&
       this.startTimeSeconds == o.startTimeSeconds;
-
-  @override
-  String toString() {
-    return 'ID:' + this.id.toString();
-  }
 }

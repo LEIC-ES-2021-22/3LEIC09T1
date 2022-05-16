@@ -3,8 +3,6 @@ import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/notification_preference.dart';
-import 'package:uni/model/notifications/class_notification_factory.dart';
-import 'package:uni/model/notifications/notification_factory.dart';
 import 'package:uni/utils/constants.dart';
 import 'package:uni/model/notifications/notification.dart';
 import 'package:timezone/timezone.dart' as tz;
