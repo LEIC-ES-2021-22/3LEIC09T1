@@ -15,6 +15,7 @@ class ClassNotificationFactory extends NotificationFactory<Lecture> {
         notificationModel.typeClass +
         ' - Sala: ' +
         notificationModel.room;
+
     return Notification(
         notificationModel.id, body, title, NotificationType.classNotif);
   }

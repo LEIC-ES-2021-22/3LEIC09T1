@@ -10,13 +10,10 @@ import 'package:sqflite/sqflite.dart';
 /// See the [Lecture] class to see what data is stored in this database.
 class AppLecturesDatabase extends AppDatabase {
   static final createScript =
-      '''CREATE TABLE lectures(id INTEGER PRIMARY KEY,subject TEXT, typeClass TEXT,
-          day INTEGER, startTime TEXT, blocks INTEGER, room TEXT, teacher TEXT, classNumber TEXT, notificationActive BOOLEAN DEFAULT (true))''';
+      '''CREATE TABLE lectures(subject TEXT, typeClass TEXT,
+          day INTEGER, startTime TEXT, blocks INTEGER, room TEXT, teacher TEXT, classNumber TEXT)''';
   static final updateClassNumber =
       '''ALTER TABLE lectures ADD classNumber TEXT''';
-  static final updateNotifications =
-      '''ALTER TABLE lectures ADD notificationActive BOOLEAN DEFAULT (true);
-        ALTER TABLE lectures ADD id INTEGER PRIMARY KEY;''';
 
   AppLecturesDatabase()
       : super(
@@ -52,8 +49,6 @@ class AppLecturesDatabase extends AppDatabase {
         maps[i]['room'],
         maps[i]['teacher'],
         maps[i]['classNumber'],
-        id: maps[i]['id'],
-        notificationActive: maps[i]['notificationActive'],
       );
     });
   }
@@ -91,8 +86,6 @@ class AppLecturesDatabase extends AppDatabase {
       batch.execute(createScript);
     } else if (oldVersion == 2) {
       batch.execute(updateClassNumber);
-    } else if (oldVersion == 4) {
-      batch.execute(updateNotifications);
     }
     await batch.commit();
   }
