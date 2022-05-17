@@ -30,9 +30,12 @@ class Lecture {
 
   int get id {
     //We assume that there is only one class of a given type in a given day
-    return md5.convert(utf8.encode('$subject-$typeClass-$day')).bytes.reduce(
-            (value, element) => value += element
-    ) % 1000;
+    BigInt agregatedId = BigInt.from(0);
+    List<int> hashBytes = sha256.convert(utf8.encode('$subject-$typeClass-$day')).bytes;
+    for (var byte in hashBytes) {
+      agregatedId += BigInt.from(byte);
+    }
+    return agregatedId.remainder(BigInt.from(100000)).toInt();
   }
 
   /// Creates an instance of the class [Lecture].
