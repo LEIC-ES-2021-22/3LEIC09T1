@@ -11,6 +11,7 @@ import 'package:uni/controller/local_storage/app_bus_stop_database.dart';
 import 'package:uni/controller/local_storage/app_courses_database.dart';
 import 'package:uni/controller/local_storage/app_exams_database.dart';
 import 'package:uni/controller/local_storage/app_last_user_info_update_database.dart';
+import 'package:uni/controller/local_storage/app_lecture_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
 import 'package:uni/controller/local_storage/app_notification_data_database.dart';
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
@@ -20,7 +21,6 @@ import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
-import 'package:uni/controller/notifications/notification_build.dart';
 import 'package:uni/controller/notifications/notification_scheduler.dart';
 import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/controller/parsers/parser_courses.dart';
@@ -284,8 +284,13 @@ ThunkAction<AppState> getUserSchedule(
 
       // Updates local database according to the information fetched -- Lectures
       if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
-        final AppLecturesDatabase db = AppLecturesDatabase();
-        db.saveNewLectures(lectures);
+        final AppLecturesDatabase lecturesDb = AppLecturesDatabase();
+        final AppLectureNotificationPreferencesDatabase
+            lecturesNotificationPreferencesDb =
+            AppLectureNotificationPreferencesDatabase();
+        lecturesDb.saveNewLectures(lectures);
+        lecturesNotificationPreferencesDb
+            .saveNewPreferencesThroughLectures(lectures);
       }
 
       store.dispatch(SetScheduleAction(lectures));

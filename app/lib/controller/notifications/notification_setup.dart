@@ -1,6 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:tuple/tuple.dart';
+import 'package:uni/controller/local_storage/app_lecture_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
 import 'package:uni/controller/local_storage/app_notification_data_database.dart';
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
@@ -8,6 +9,7 @@ import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/notifications/notification_scheduler.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/lecture_notification_preference.dart';
 import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/notifications/class_notification_factory.dart';
@@ -25,6 +27,11 @@ Future<List<NotificationPreference>> notificationPreferences() async {
 
 Future<List<NotificationData>> notificationsData() async {
   return AppNotificationDataDatabase().notificationsData();
+}
+
+Future<List<LectureNotificationPreference>>
+    lectureNotificationPreferences() async {
+  return AppLectureNotificationPreferencesDatabase().preferences();
 }
 
 Future<void> notificationSetUp(Store<AppState> store) async {
@@ -45,6 +52,7 @@ Future<void> notificationSetUp(Store<AppState> store) async {
 
 Future<void> classNotificationSetUp(
     Store<AppState> store, int antecedence) async {
+  final preferences = lectureNotificationPreferences();
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
     NotificationScheduler(store).schedule(

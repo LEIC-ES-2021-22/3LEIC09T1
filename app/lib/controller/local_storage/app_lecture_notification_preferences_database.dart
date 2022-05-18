@@ -7,8 +7,10 @@ import 'package:uni/model/entities/lecture_notification_preference.dart';
 
 /// Manages the app's Lectures database.
 ///
-/// This database stores information about the user's lectures.
-/// See the [Lecture] class to see what data is stored in this database.
+/// This database stores information about the user's
+/// lecture notification preferences.
+/// See the [LectureNotificationPreference]
+/// class to see what data is stored in this database.
 class AppLectureNotificationPreferencesDatabase extends AppDatabase {
   static final createScript =
       '''CREATE TABLE lectureNotificationPreferences(id INTEGER PRIMARY KEY, isActive BOOLEAN NOT NULL DEFAULT TRUE)''';
@@ -26,6 +28,16 @@ class AppLectureNotificationPreferencesDatabase extends AppDatabase {
       List<LectureNotificationPreference> preferences) async {
     await deleteLectureNotificationPreferences();
     await _insertLectureNotificationPreferences(preferences);
+  }
+
+  /// Replaces all of the data in this database with preferences
+  /// generate from [lectures]
+  saveNewPreferencesThroughLectures(List<Lecture> lectures) async {
+    final List<LectureNotificationPreference> preferences = [];
+    for (Lecture l in lectures) {
+      preferences.add(LectureNotificationPreference(l.id, true));
+    }
+    this.saveNewLectureNotificationPreferences(preferences);
   }
 
   /// Returns a list containing all of the lectures stored in this database.
