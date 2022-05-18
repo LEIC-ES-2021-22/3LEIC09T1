@@ -35,6 +35,7 @@ Future<List<LectureNotificationPreference>>
 }
 
 Future<void> notificationSetUp(Store<AppState> store) async {
+  Logger().i('Getting here');
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 == '' || userPersistentInfo.item2 == '') return;
@@ -52,7 +53,7 @@ Future<void> notificationSetUp(Store<AppState> store) async {
 
 Future<void> classNotificationSetUp(
     Store<AppState> store, int antecedence) async {
-  final preferences = lectureNotificationPreferences();
+  final preferences = await lectureNotificationPreferences();
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
     NotificationScheduler(store).schedule(

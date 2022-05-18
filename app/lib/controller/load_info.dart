@@ -137,5 +137,7 @@ Future<void> loadNotificationData(Store<AppState> store) async {
     await store.dispatch(updateStateBasedOnLocalNotificationsData());
     await store.dispatch(updateStateBasedOnLocalUserNotificationPreferences());
     await store.dispatch(updateStateBasedOnLocalUserLectures());
+    await store
+        .dispatch(updateStateBasedOnLocalLectureNotificationPreferences());
   }
 }

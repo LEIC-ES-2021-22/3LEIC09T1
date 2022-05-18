@@ -36,6 +36,7 @@ import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/lecture_notification_preference.dart';
 import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/entities/profile.dart';
@@ -56,7 +57,7 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
           await NetworkRouter.login(username, password, faculty, true);
       store.dispatch(SaveLoginDataAction(session));
       if (session.authenticated) {
-        // await loadRemoteUserInfoToState(store);
+        await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
         action?.complete();
 
@@ -106,7 +107,7 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
         await acceptTermsAndConditions();
 
         // Notifications
-        await loadNotificationData(store);
+        // await loadNotificationData(store);
         notificationSetUp(store); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
@@ -586,5 +587,16 @@ ThunkAction<AppState> updateStateBasedOnLocalNotificationsData() {
     final List<NotificationData> notificationsData =
         await db.notificationsData();
     store.dispatch(SetNotificationsData(notificationsData));
+  };
+}
+
+ThunkAction<AppState> updateStateBasedOnLocalLectureNotificationPreferences() {
+  return (Store<AppState> store) async {
+    final AppLectureNotificationPreferencesDatabase db =
+        AppLectureNotificationPreferencesDatabase();
+    final List<LectureNotificationPreference> lectureNotificationPreferences =
+        await db.preferences();
+    store.dispatch(
+        SetLectureNotificationPreferences(lectureNotificationPreferences));
   };
 }

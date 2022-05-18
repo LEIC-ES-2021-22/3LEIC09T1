@@ -46,7 +46,8 @@ class AppLectureNotificationPreferencesDatabase extends AppDatabase {
     final Database db = await this.getDatabase();
 
     // Query the table for All The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('lectures');
+    final List<Map<String, dynamic>> maps =
+        await db.query('lectureNotificationPreferences');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
