@@ -50,6 +50,7 @@ dependencies:
   material_design_icons_flutter: ^5.0.6595
   flutter_local_notifications: ^5.0.0+4
   flutter_native_timezone: ^2.0.0
+  workmanager: ^0.4.1
 
 
 dev_dependencies:
