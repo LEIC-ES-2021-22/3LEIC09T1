@@ -13,7 +13,6 @@ import 'package:uni/model/entities/lecture_notification_preference.dart';
 import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/notifications/class_notification_factory.dart';
-import 'package:uni/model/notifications/missing_notification_preference_exception.dart';
 import 'package:uni/model/notifications/notification.dart';
 
 Future<List<NotificationPreference>> notificationPreferences() async {

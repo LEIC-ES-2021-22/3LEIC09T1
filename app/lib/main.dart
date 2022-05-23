@@ -56,7 +56,7 @@ workManagerCallbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) {
     switch (taskName) {
       case ClassNotificationScheduleTask.taskId:
-        ClassNotificationScheduleTask.scheduleClassNotifications();
+        ClassNotificationScheduleTask.scheduleClassNotifications(store);
         break;
     }
     return Future.value(true);
