@@ -3,7 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 /// Creates a TZDateTime for the same week day in the next week
 /// The week starts on monday
-tz.TZDateTime calculateTime({
+tz.TZDateTime calculateDayInNextWeek({
   @required tz.TZDateTime now,
   @required int indexDayOfWeek,
   int antecedence = 0,
