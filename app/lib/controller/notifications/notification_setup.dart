@@ -13,6 +13,8 @@ import 'package:uni/model/entities/lecture_notification_preference.dart';
 import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/notifications/class_notification_factory.dart';
+import 'package:uni/model/notifications/missing_notification_preference_exception.dart';
+import 'package:uni/model/notifications/notification.dart';
 
 Future<List<NotificationPreference>> notificationPreferences() async {
   final AppNotificationPreferencesDatabase db =
@@ -54,10 +56,35 @@ Future<void> notificationSetUp(Store<AppState> store) async {
 Future<void> classNotificationSetUp(
     Store<AppState> store, int antecedence) async {
   final preferences = await lectureNotificationPreferences();
+  Logger().i('Lecture preferences:' + preferences.toString());
+  final alreadyScheduled = await notificationsData();
+  Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
+    if (shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
+      continue;
+    }
+    final Notification notification =
+        ClassNotificationFactory().buildNotification(lecture);
+    alreadyScheduled
+        .add(NotificationData(notification.id, lecture.id, 'lecture'));
     NotificationScheduler(store).schedule(
         ClassNotificationFactory().buildNotification(lecture),
         ClassNotificationFactory().calculateTime(lecture, antecedence));
   }
+  AppNotificationDataDatabase().saveNewNotificationData(alreadyScheduled);
+}
+
+bool shouldScheduleClass(
+    Lecture lecture,
+    List<NotificationData> notificationsData,
+    List<LectureNotificationPreference> preferences) {
+  try {
+    return NotificationData.listContainsModelId(
+            notificationsData, lecture.id) &&
+        LectureNotificationPreference.idIsActive(preferences, lecture.id);
+  } catch (e) {
+    Logger().e('Error: ' + e.cause);
+  }
+  return false;
 }

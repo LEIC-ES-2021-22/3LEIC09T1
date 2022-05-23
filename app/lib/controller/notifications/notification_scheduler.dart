@@ -27,6 +27,8 @@ class NotificationScheduler {
       Notification notification, tz.TZDateTime scheduledTime) async {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         this._store.state.content['flutterLocalNotificationsPlugin'];
+    Logger()
+        .i('LocalNotifPlugin:' + flutterLocalNotificationsPlugin.toString());
     await flutterLocalNotificationsPlugin.zonedSchedule(
         notification.id,
         notification.title,
