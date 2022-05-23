@@ -38,7 +38,8 @@ class AppState {
       'coursesStateStatus': RequestStatus.none,
       'lastUserInfoUpdateTime': null,
       'userNotificationPreferences': null,
-      'notificationsData': null
+      'notificationsData': null,
+      'lectureNotificationPreferences': null,
     };
   }
 

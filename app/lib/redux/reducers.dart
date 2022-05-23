@@ -246,3 +246,11 @@ AppState setNotificationsData(AppState state, SetNotificationsData action) {
   return state.cloneAndUpdateValue(
       'notificationsData', action.notificationsData);
 }
+
+AppState setLectureNotificationPreferences(
+    AppState state, SetLectureNotificationPreferences action) {
+  Logger().i('setting lecture notification preferences ' +
+      action.preferences.toString());
+  return state.cloneAndUpdateValue(
+      'lectureNotificationPreferences', action.preferences);
+}

@@ -11,6 +11,7 @@ import 'package:uni/controller/local_storage/app_bus_stop_database.dart';
 import 'package:uni/controller/local_storage/app_courses_database.dart';
 import 'package:uni/controller/local_storage/app_exams_database.dart';
 import 'package:uni/controller/local_storage/app_last_user_info_update_database.dart';
+import 'package:uni/controller/local_storage/app_lecture_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
 import 'package:uni/controller/local_storage/app_notification_data_database.dart';
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
@@ -20,7 +21,6 @@ import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
-import 'package:uni/controller/notifications/notification_build.dart';
 import 'package:uni/controller/notifications/notification_scheduler.dart';
 import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/controller/parsers/parser_courses.dart';
@@ -36,6 +36,7 @@ import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/lecture_notification_preference.dart';
 import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/entities/profile.dart';
@@ -56,7 +57,7 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
           await NetworkRouter.login(username, password, faculty, true);
       store.dispatch(SaveLoginDataAction(session));
       if (session.authenticated) {
-        // await loadRemoteUserInfoToState(store);
+        await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
         action?.complete();
 
@@ -106,7 +107,7 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
         await acceptTermsAndConditions();
 
         // Notifications
-        await loadNotificationData(store);
+        // await loadNotificationData(store);
         notificationSetUp(store); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
@@ -284,8 +285,13 @@ ThunkAction<AppState> getUserSchedule(
 
       // Updates local database according to the information fetched -- Lectures
       if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
-        final AppLecturesDatabase db = AppLecturesDatabase();
-        db.saveNewLectures(lectures);
+        final AppLecturesDatabase lecturesDb = AppLecturesDatabase();
+        final AppLectureNotificationPreferencesDatabase
+            lecturesNotificationPreferencesDb =
+            AppLectureNotificationPreferencesDatabase();
+        lecturesDb.saveNewLectures(lectures);
+        lecturesNotificationPreferencesDb
+            .saveNewPreferencesThroughLectures(lectures);
       }
 
       store.dispatch(SetScheduleAction(lectures));
@@ -581,5 +587,16 @@ ThunkAction<AppState> updateStateBasedOnLocalNotificationsData() {
     final List<NotificationData> notificationsData =
         await db.notificationsData();
     store.dispatch(SetNotificationsData(notificationsData));
+  };
+}
+
+ThunkAction<AppState> updateStateBasedOnLocalLectureNotificationPreferences() {
+  return (Store<AppState> store) async {
+    final AppLectureNotificationPreferencesDatabase db =
+        AppLectureNotificationPreferencesDatabase();
+    final List<LectureNotificationPreference> lectureNotificationPreferences =
+        await db.preferences();
+    store.dispatch(
+        SetLectureNotificationPreferences(lectureNotificationPreferences));
   };
 }
