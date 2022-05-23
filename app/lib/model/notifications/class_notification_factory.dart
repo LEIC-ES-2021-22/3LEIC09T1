@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:uni/model/notifications/notification.dart';
 import 'package:uni/model/notifications/notification_factory.dart';
@@ -23,6 +22,7 @@ class ClassNotificationFactory extends NotificationFactory<Lecture> {
 
   tz.TZDateTime calculateTime(Lecture notificationModel, int antecedence) {
     return tzu.calculateTime(
+        now: tz.TZDateTime.now(tz.local),
         indexDayOfWeek: notificationModel.day + 1,
         antecedence: antecedence,
         startTimeHours: notificationModel.startTimeHours,
