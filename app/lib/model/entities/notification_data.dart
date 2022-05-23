@@ -30,4 +30,12 @@ class NotificationData {
         ' | Type:' +
         this.notificationType;
   }
+
+  static bool listContainsModelId(
+      List<NotificationData> notificationData, int modelId) {
+    for (NotificationData data in notificationData) {
+      if (data.modelId == modelId) return true;
+    }
+    return false;
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:uni/model/notifications/missing_notification_preference_exception.dart';
+
 class LectureNotificationPreference {
   bool isActive;
   int id;
@@ -21,5 +23,16 @@ class LectureNotificationPreference {
         this.id.toString() +
         ' | IsActive: ' +
         this.isActive.toString();
+  }
+
+  static bool idIsActive(
+      List<LectureNotificationPreference> preferences, int id) {
+    for (LectureNotificationPreference p in preferences) {
+      if (p.id == id) return p.isActive;
+    }
+    throw MissingNotificationPreferenceException(
+        'Lecture notification preference for lecture with id ' +
+            id.toString() +
+            ' is not present');
   }
 }
