@@ -25,13 +25,20 @@ class _NotificationSettingsState extends State<NotificationSetting> {
   String _notificationName;
   bool _switched;
   Function(bool) _onChanged;
-  double _timerSliderValue = 0; // Class notification
+  List<NotificationPreference> current = AppNotificationPreferencesDatabase()
+      .preferences() as List<NotificationPreference>;
+
+  double _timerSliderValue = 0;
 
   _NotificationSettingsState(String notificationName,
       {bool switched, Function(bool) onChanged}) {
     this._notificationName = notificationName;
     this._switched = switched;
     this._onChanged = onChanged;
+    this._timerSliderValue = current[current.indexWhere(
+            (element) => element.notificationType == _notificationName)]
+        .antecedence
+        .toDouble(); // Class notification
   }
 
   @override
