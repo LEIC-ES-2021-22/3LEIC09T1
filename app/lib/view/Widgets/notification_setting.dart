@@ -84,18 +84,17 @@ class _NotificationSettingsState extends State<NotificationSetting> {
         //New preference
         NotificationPreference _pref = NotificationPreference(
             _active, _timerSliderValue.round(), _notificationName);
-        List<NotificationPreference> _lst = [_pref];
 
         //Access database
         AppNotificationPreferencesDatabase _db =
             AppNotificationPreferencesDatabase();
 
         //Update the preference list
-        Future<List<NotificationPreference>> pref = _db.preferences();
-        List<NotificationPreference> preferences =
-            pref as List<NotificationPreference>;
-        preferences.add(_pref);
-        _db.saveNewPreferences(preferences);
+        Future<List<NotificationPreference>> _preflst = _db.preferences();
+        List<NotificationPreference> _preferences =
+            _preflst as List<NotificationPreference>;
+        _preferences.add(_pref);
+        _db.saveNewPreferences(_preferences);
       }
     }
 
