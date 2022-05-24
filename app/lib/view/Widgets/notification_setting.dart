@@ -78,15 +78,19 @@ class _NotificationSettingsState extends State<NotificationSetting> {
             "$_timerSliderValue dias antes do prazo do próximo pagamento."));
       }
 
+      // Only consider active if the slider is set to a value greater than 0
       bool _active = _timerSliderValue.round() > 0;
       if (_active) {
+        //New preference
         NotificationPreference _pref = NotificationPreference(
             _active, _timerSliderValue.round(), _notificationName);
         List<NotificationPreference> _lst = [_pref];
 
+        //Access database
         AppNotificationPreferencesDatabase _db =
             AppNotificationPreferencesDatabase();
 
+        //Update the preference list
         Future<List<NotificationPreference>> pref = _db.preferences();
         List<NotificationPreference> preferences =
             pref as List<NotificationPreference>;
