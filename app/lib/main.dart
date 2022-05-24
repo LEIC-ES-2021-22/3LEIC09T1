@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -11,6 +12,7 @@ import 'package:uni/controller/middleware.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
+import 'package:uni/tasks/class_notification_schedule_task.dart';
 import 'package:uni/utils/constants.dart' as Constants;
 import 'package:uni/view/Pages/about_page_view.dart';
 import 'package:uni/view/Pages/bug_report_page_view.dart';
@@ -24,6 +26,7 @@ import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:workmanager/workmanager.dart';
 
 import 'controller/on_start_up.dart';
 import 'model/schedule_page_model.dart';
@@ -49,11 +52,31 @@ setupNotifications() {
       .initialize(initializationSettings);
 }
 
+workManagerCallbackDispatcher() {
+  Workmanager().executeTask((taskName, inputData) {
+    switch (taskName) {
+      case ClassNotificationScheduleTask.taskId:
+        ClassNotificationScheduleTask.scheduleClassNotifications(store);
+        break;
+    }
+    return Future.value(true);
+  });
+}
+
+setupWorkManager() async {
+  await Workmanager().initialize(
+    workManagerCallbackDispatcher,
+    isInDebugMode: kDebugMode ? true : false
+  );
+  await ClassNotificationScheduleTask.createClassNotificationSchedulingJob();
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OnStartUp.onStart(store);
   tz.initializeTimeZones();
   await setupNotifications();
+  await setupWorkManager();
   await SentryFlutter.init(
     (options) {
       options.dsn =
