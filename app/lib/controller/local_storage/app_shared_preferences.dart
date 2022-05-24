@@ -17,6 +17,8 @@ class AppSharedPreferences {
   static final String userFaculties = 'user_faculties';
   static final String termsAndConditions = 'terms_and_conditions';
   static final String areTermsAndConditionsAcceptedKey = 'is_t&c_accepted';
+  static final String classNotificationJobCreatedKey =
+      'class_notification_job_created';
   static final int keyLength = 32;
   static final int ivLength = 16;
   static final iv = IV.fromLength(ivLength);
@@ -39,6 +41,18 @@ class AppSharedPreferences {
     // print('There are faculties ' + faculties[0] + '\n\n\n\n');
     prefs.setStringList(
         userFaculties, faculties); // Could be multiple faculties
+  }
+
+  /// Sets whether or not the class notification job have been created.
+  static Future<void> setClassNotificationJobCreated(bool isCreated) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(classNotificationJobCreatedKey, isCreated);
+  }
+
+  /// Returns whether or not the class notification have been created.
+  static Future<bool> classNotificationJobCreated() async {
+    final prefs = await SharedPreferences.getInstance();
+    return  prefs.getBool(classNotificationJobCreatedKey) ?? false;
   }
 
   /// Sets whether or not the Terms and Conditions have been accepted.

@@ -29,6 +29,11 @@ const faculties = [
 enum NotificationType { classNotif, tuitionNotif }
 
 extension NotificationTypeData on NotificationType {
+  static const typeNames = {
+    NotificationType.classNotif: 'class notification',
+    NotificationType.tuitionNotif: 'tuition notification'
+  };
+
   static const channelIds = {
     NotificationType.classNotif: '0',
     NotificationType.tuitionNotif: '1'
@@ -49,4 +54,5 @@ extension NotificationTypeData on NotificationType {
   String get channelName => channelNames[this];
   String get channelId => channelIds[this];
   String get channelDesc => channelDescriptions[this];
+  String get typeName => typeNames[this];
 }
