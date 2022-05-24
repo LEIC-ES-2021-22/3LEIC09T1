@@ -79,14 +79,20 @@ class _NotificationSettingsState extends State<NotificationSetting> {
       }
 
       bool _active = _timerSliderValue.round() > 0;
-      NotificationPreference _pref = NotificationPreference(
-          _active, _timerSliderValue.round(), _notificationName);
-      List<NotificationPreference> _lst = [_pref];
+      if (_active) {
+        NotificationPreference _pref = NotificationPreference(
+            _active, _timerSliderValue.round(), _notificationName);
+        List<NotificationPreference> _lst = [_pref];
 
-      //Não estou sempre a criar uma base de dados, em vez de buscar a já presente?
-      AppNotificationPreferencesDatabase _db =
-          AppNotificationPreferencesDatabase();
-      _db.saveNewPreferences(_lst);
+        AppNotificationPreferencesDatabase _db =
+            AppNotificationPreferencesDatabase();
+
+        Future<List<NotificationPreference>> pref = _db.preferences();
+        List<NotificationPreference> preferences =
+            pref as List<NotificationPreference>;
+        preferences.add(_pref);
+        _db.saveNewPreferences(preferences);
+      }
     }
 
     return Padding(
