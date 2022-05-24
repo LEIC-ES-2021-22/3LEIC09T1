@@ -140,3 +140,26 @@ To some members, the test gimmicks are still somewhat troubling to figure out. A
 
 
 ![Print of first iteration](img/incremento1.png)
+
+### 2nd iteration
+[Release](https://github.com/LEIC-ES-2021-22/3LEIC09T1/releases/tag/Iteration2)
+
+#### What went well
+
+- We improved our usage of GitFlow by:
+  - reviewing pull requests
+  - creating development (dev) branch
+  - using feature/work item branches
+- We created tests for edge cases.
+
+#### What went wrong
+ - We could improve our task assignments
+ - We need to be more careful when reviewing PRs
+ - Don't accept pull request in the last minutes
+
+#### What still puzzles me
+  - The interaction between the database system and the redux store
+  - The scheduling of recuring notifications on a specific day 
+
+![Print of second iteration](img/incremento2.png)
+
