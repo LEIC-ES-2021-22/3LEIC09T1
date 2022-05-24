@@ -77,5 +77,14 @@ void main() {
       expect(nextDay.minute, 45);
       expect(nextDay.year, 2022);
     });
+    test('Notification is at the same day as now', () {
+      final tz.TZDateTime now = tz.TZDateTime.utc(2022, 05, 23, 11, 0, 30);
+      final tz.TZDateTime nextDay = calculateDayInNextWeek(
+          now: now,
+          indexDayOfWeek: 4,
+          startTimeHours: 14,
+          startTimeMinutes: 0
+      );
+    });
   });
 }
