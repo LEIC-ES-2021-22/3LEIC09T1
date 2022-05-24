@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
+import 'package:uni/model/entities/notification_preference.dart';
 
 class NotificationSetting extends StatefulWidget {
   String _notificationName;
@@ -75,6 +77,16 @@ class _NotificationSettingsState extends State<NotificationSetting> {
         columnChildren.add(Text(
             "$_timerSliderValue dias antes do prazo do próximo pagamento."));
       }
+
+      bool _active = _timerSliderValue.round() > 0;
+      NotificationPreference _pref = NotificationPreference(
+          _active, _timerSliderValue.round(), _notificationName);
+      List<NotificationPreference> _lst = [_pref];
+
+      //Não estou sempre a criar uma base de dados, em vez de buscar a já presente?
+      AppNotificationPreferencesDatabase _db =
+          AppNotificationPreferencesDatabase();
+      _db.saveNewPreferences(_lst);
     }
 
     return Padding(
