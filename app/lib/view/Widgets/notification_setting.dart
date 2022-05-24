@@ -25,7 +25,7 @@ class _NotificationSettingsState extends State<NotificationSetting> {
   String _notificationName;
   bool _switched;
   Function(bool) _onChanged;
-  double _timerSliderValue = 0;
+  double _timerSliderValue = 0; // Class notification
 
   _NotificationSettingsState(String notificationName,
       {bool switched, Function(bool) onChanged}) {
@@ -93,7 +93,10 @@ class _NotificationSettingsState extends State<NotificationSetting> {
         Future<List<NotificationPreference>> _preflst = _db.preferences();
         List<NotificationPreference> _preferences =
             _preflst as List<NotificationPreference>;
-        _preferences.add(_pref);
+        //search and update the preference
+        _preferences[_preferences.indexWhere(
+                (element) => element.notificationType == _notificationName)] =
+            _pref;
         _db.saveNewPreferences(_preferences);
       }
     }
