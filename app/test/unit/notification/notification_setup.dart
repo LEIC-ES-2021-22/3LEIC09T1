@@ -6,22 +6,22 @@ import 'package:uni/model/entities/notification_data.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 
+import 'notification_setup.mocks.dart';
+
 @GenerateMocks([Lecture])
 void main() {
   group('Notification Setup Helpers Test', () {
     test('shouldScheduleClass test', () {
-      Lecture lecture1 = Lecture(
-          'CPD', 'typeClass', 1, 2, 'B111', 'AOR', '3LEIC01', 0, 0, 2, 0);
-      Lecture lecture2 = Lecture(
-          'ES', 'typeClass', 1, 2, 'B111', 'AOR', '3LEIC02', 2, 0, 4, 0);
-      List<LectureNotificationPreference> preferences = [
-        LectureNotificationPreference(lecture1.id, true),
-        LectureNotificationPreference(lecture2.id, false),
+      final lecture = MockLecture();
+      final List<LectureNotificationPreference> preferences = [
+        LectureNotificationPreference(1, true),
+        LectureNotificationPreference(2, false),
       ];
-      List<NotificationData> data = [];
-
-      expect(shouldScheduleClass(lecture1, data, preferences), isTrue);
-      expect(shouldScheduleClass(lecture2, data, preferences), isFalse);
+      final List<NotificationData> data = [];
+      when(lecture.id).thenReturn(1);
+      expect(shouldScheduleClass(lecture, data, preferences), isTrue);
+      when(lecture.id).thenReturn(2);
+      expect(shouldScheduleClass(lecture, data, preferences), isFalse);
     });
   });
 }
