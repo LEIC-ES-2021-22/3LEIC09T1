@@ -25,8 +25,7 @@ Future<List<NotificationPreference>> notificationPreferences() async {
       NotificationPreference(
           isActive: true,
           antecedence: NotificationPreference.DEFAULT_ANTECEDENCE,
-          notificationType: NotificationType.classNotif.typeName
-      )
+          notificationType: NotificationType.classNotif.typeName)
     ];
     await db.saveNewPreferences(preferences);
   }
@@ -42,15 +41,20 @@ Future<List<LectureNotificationPreference>>
   return AppLectureNotificationPreferencesDatabase().preferences();
 }
 
+Future<void> resetNotifications(Store<AppState> store) async {
+  NotificationScheduler(store).unscheduleAll();
+  notificationSetUp(store);
+}
+
 Future<void> notificationSetUp(Store<AppState> store) async {
-  Logger().i('Getting here');
+  // TODO: this function might be useless
+  // Check if user session is persistent
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 == '' || userPersistentInfo.item2 == '') return;
 
   final List<NotificationPreference> preferences =
       await notificationPreferences();
-  Logger().i('Preferences:' + preferences.toString());
   for (NotificationPreference preference in preferences) {
     if (preference.notificationType == NotificationType.classNotif.typeName &&
         preference.isActive) {
@@ -66,6 +70,7 @@ Future<void> classNotificationSetUp(
   final alreadyScheduled = await notificationsData();
   Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
+  final NotificationScheduler scheduler = NotificationScheduler(store);
   for (Lecture lecture in lectures) {
     if (shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
       continue;
@@ -74,8 +79,7 @@ Future<void> classNotificationSetUp(
         ClassNotificationFactory().buildNotification(lecture);
     alreadyScheduled.add(NotificationData(
         notification.id, lecture.id, NotificationType.classNotif.typeName));
-    NotificationScheduler(store).schedule(
-        ClassNotificationFactory().buildNotification(lecture),
+    scheduler.schedule(ClassNotificationFactory().buildNotification(lecture),
         ClassNotificationFactory().calculateTime(lecture, antecedence));
   }
   AppNotificationDataDatabase().saveNewNotificationData(alreadyScheduled);
