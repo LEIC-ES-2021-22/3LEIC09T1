@@ -20,7 +20,6 @@ class SchedulePageView extends StatelessWidget {
   final RequestStatus scheduleStatus;
   final TabController tabController;
   final ScrollController scrollViewController;
-  Icon ic = Icon(Icons.alarm_add_rounded);
   int fabIconNumber = 0;
 
   @override
@@ -75,7 +74,9 @@ class SchedulePageView extends StatelessWidget {
     for (int i = 0; i < lectures.length; i++) {
       final Lecture lecture = lectures[i];
 
-      final Stack stk = Stack(
+      Icon ic = Icon(Icons.alarm_add_rounded);
+
+      Stack stk = Stack(
         children: <Widget>[
           ScheduleSlot(
             subject: lecture.subject,
@@ -92,7 +93,7 @@ class SchedulePageView extends StatelessWidget {
                 scale: 0.8,
                 child: FloatingActionButton(
                     onPressed: () {
-                      setIcon(); // Add more functions to do things here!
+                      setIcon(ic); // Add more functions to do things here!
                     },
                     child: ic),
               ))
@@ -131,7 +132,7 @@ class SchedulePageView extends StatelessWidget {
     );
   }
 
-  void setIcon() {
+  void setIcon(Icon ic) {
     if (fabIconNumber == 0) {
       ic = Icon(Icons.alarm_off_rounded);
       fabIconNumber = 1;
