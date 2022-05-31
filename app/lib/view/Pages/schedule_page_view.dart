@@ -20,6 +20,8 @@ class SchedulePageView extends StatelessWidget {
   final RequestStatus scheduleStatus;
   final TabController tabController;
   final ScrollController scrollViewController;
+  Icon ic = Icon(Icons.alarm_add_rounded);
+  int fabIconNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -72,15 +74,32 @@ class SchedulePageView extends StatelessWidget {
     final List<Widget> scheduleContent = <Widget>[];
     for (int i = 0; i < lectures.length; i++) {
       final Lecture lecture = lectures[i];
-      scheduleContent.add(ScheduleSlot(
-        subject: lecture.subject,
-        typeClass: lecture.typeClass,
-        rooms: lecture.room,
-        begin: lecture.startTime,
-        end: lecture.endTime,
-        teacher: lecture.teacher,
-        classNumber: lecture.classNumber,
-      ));
+
+      final Stack stk = Stack(
+        children: <Widget>[
+          ScheduleSlot(
+            subject: lecture.subject,
+            typeClass: lecture.typeClass,
+            rooms: lecture.room,
+            begin: lecture.startTime,
+            end: lecture.endTime,
+            teacher: lecture.teacher,
+            classNumber: lecture.classNumber,
+          ),
+          Align(
+              alignment: Alignment(0.65, 0),
+              child: Transform.scale(
+                scale: 0.8,
+                child: FloatingActionButton(
+                    onPressed: () {
+                      setIcon(); // Add more functions to do things here!
+                    },
+                    child: ic),
+              ))
+        ],
+      );
+
+      scheduleContent.add(stk);
     }
     return scheduleContent;
   }
@@ -110,5 +129,15 @@ class SchedulePageView extends StatelessWidget {
           Center(child: Text('Não possui aulas à ' + daysOfTheWeek[day] + '.')),
       index: day,
     );
+  }
+
+  void setIcon() {
+    if (fabIconNumber == 0) {
+      ic = Icon(Icons.alarm_off_rounded);
+      fabIconNumber = 1;
+    } else {
+      ic = Icon(Icons.add_alarm_rounded);
+      fabIconNumber = 0;
+    }
   }
 }
