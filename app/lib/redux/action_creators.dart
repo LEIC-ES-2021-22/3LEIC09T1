@@ -101,6 +101,7 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
         usernameController.clear();
         passwordController.clear();
         await acceptTermsAndConditions();
+        await notificationSetUp(store);
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
       }
