@@ -13,6 +13,10 @@ jobs:
     steps:
       - name: Checkout Code from PR/Commit
         uses: actions/checkout@v2
+        
+      - name: View files
+        run: |
+          cat app/pubspec.yaml
       
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v2.0.1
