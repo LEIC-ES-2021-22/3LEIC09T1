@@ -22,6 +22,8 @@ void main() {
       expect(shouldScheduleClass(lecture, data, preferences), isTrue);
       when(lecture.id).thenReturn(2);
       expect(shouldScheduleClass(lecture, data, preferences), isFalse);
+      when(lecture.id).thenReturn(3);
+      expect(shouldScheduleClass(lecture, data, preferences), isFalse);
     });
   });
 }
