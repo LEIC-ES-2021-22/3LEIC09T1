@@ -74,7 +74,7 @@ class SchedulePageView extends StatelessWidget {
     for (int i = 0; i < lectures.length; i++) {
       final Lecture lecture = lectures[i];
 
-      Icon ic = Icon(Icons.alarm_add_rounded);
+      IconData ic = Icons.alarm_add_rounded;
 
       Stack stk = Stack(
         children: <Widget>[
@@ -90,13 +90,13 @@ class SchedulePageView extends StatelessWidget {
           Align(
               alignment: Alignment(0.65, 0),
               child: Transform.scale(
-                scale: 0.8,
-                child: FloatingActionButton(
-                    onPressed: () {
-                      setIcon(ic); // Add more functions to do things here!
-                    },
-                    child: ic),
-              ))
+                  scale: 0.8,
+                  child: FloatingActionButton(
+                      onPressed: () {
+                        setIcon(ic); // Add more functions to do things here!
+                      },
+                      child: new Icon(ic),
+                      heroTag: null)))
         ],
       );
 
@@ -132,13 +132,14 @@ class SchedulePageView extends StatelessWidget {
     );
   }
 
-  void setIcon(Icon ic) {
-    if (fabIconNumber == 0) {
-      ic = Icon(Icons.alarm_off_rounded);
-      fabIconNumber = 1;
+  IconData setIcon(IconData ic) {
+    if (ic == Icons.alarm_add_rounded) {
+      print("Change to off");
+      ic = Icons.alarm_off_rounded;
     } else {
-      ic = Icon(Icons.add_alarm_rounded);
-      fabIconNumber = 0;
+      print("Change to on");
+      ic = Icons.alarm_add_rounded;
     }
+    return ic;
   }
 }
