@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:logger/logger.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry/sentry.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/controller/middleware.dart';
+import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
@@ -77,6 +79,11 @@ Future<void> main() async {
   tz.initializeTimeZones();
   await setupNotifications();
   await setupWorkManager();
+  await notificationSetUp(store);
+  Logger().i("SCHEDULED NOTIFICATIONS", await store.state.content['flutterLocalNotificationsPlugin']
+      .resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()
+      ?.getActiveNotifications());
   await SentryFlutter.init(
     (options) {
       options.dsn =
