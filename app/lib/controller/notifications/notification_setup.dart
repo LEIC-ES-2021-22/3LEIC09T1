@@ -68,7 +68,7 @@ Future<void> classNotificationSetUp(
   Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
-    if (classNotificationScheduled(lecture, alreadyScheduled, preferences)) {
+    if (shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
       Logger().i("Notification Already Scheduled: ${lecture.subject}-${lecture.day}");
       continue;
     }
@@ -83,7 +83,7 @@ Future<void> classNotificationSetUp(
   AppNotificationDataDatabase().saveNewNotificationData(alreadyScheduled);
 }
 
-bool classNotificationScheduled(
+bool shouldScheduleClass(
     Lecture lecture,
     List<NotificationData> notificationsData,
     List<LectureNotificationPreference> preferences) {
