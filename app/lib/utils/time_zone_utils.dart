@@ -8,7 +8,7 @@ int calculateDelayBetweenDays({
 }) {
   final nowWeekDayStartingZero = now.weekday - 1;
   return nowWeekDayStartingZero > indexDayOfWeek ?
-    (indexDayOfWeek - nowWeekDayStartingZero) % 7:
+  (indexDayOfWeek - nowWeekDayStartingZero) % 7 :
     7 + indexDayOfWeek - nowWeekDayStartingZero;
 }
 

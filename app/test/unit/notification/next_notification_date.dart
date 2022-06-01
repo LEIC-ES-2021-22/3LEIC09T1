@@ -14,7 +14,7 @@ void main() {
           startTimeHours: 14,
           startTimeMinutes: 0
       );
-      expect(nextDay.weekday, nextDay.weekday); //Expects the same day of week
+      expect(nextDay.weekday, 2); //Expects the same day of week
       expect(nextDay.day, 31);
       expect(nextDay.hour, 14);
       expect(nextDay.minute, 0);
@@ -28,7 +28,7 @@ void main() {
           startTimeHours: 14,
           startTimeMinutes: 0
       );
-      expect(nextDay.weekday, nextDay.weekday); //Expects the same day of week
+      expect(nextDay.weekday, 1); //Expects the same day of week
       expect(nextDay.day, 30);
       expect(nextDay.hour, 14);
       expect(nextDay.minute, 0);
@@ -42,7 +42,7 @@ void main() {
           startTimeHours: 14,
           startTimeMinutes: 0
       );
-      expect(nextDay.weekday, nextDay.weekday); //Expects the same day of week
+      expect(nextDay.weekday, 5); //Expects the same day of week
       expect(nextDay.day, 3);
       expect(nextDay.hour, 14);
       expect(nextDay.minute, 0);
@@ -56,7 +56,7 @@ void main() {
           startTimeHours: 14,
           startTimeMinutes: 0
       );
-      expect(nextDay.weekday, nextDay.weekday); //Expects the same day of week
+      expect(nextDay.weekday, 5); //Expects the same day of week
       expect(nextDay.day, 6);
       expect(nextDay.hour, 14);
       expect(nextDay.minute, 0);
@@ -71,7 +71,7 @@ void main() {
           startTimeMinutes: 0,
           antecedence: Duration(minutes: 15)
       );
-      expect(nextDay.weekday, nextDay.weekday); //Expects the same day of week
+      expect(nextDay.weekday, 5); //Expects the same day of week
       expect(nextDay.day, 3);
       expect(nextDay.hour, 8);
       expect(nextDay.minute, 45);
@@ -85,6 +85,19 @@ void main() {
           startTimeHours: 14,
           startTimeMinutes: 0
       );
+    });
+    test('Notification is in a different month', () {
+      final tz.TZDateTime now = tz.TZDateTime.utc(2022, 05, 31, 21, 27, 0);
+      final tz.TZDateTime nextDay = calculateDayInNextWeek(
+        now: now,
+        indexDayOfWeek: 2,
+        startTimeHours: 8,
+        startTimeMinutes: 30
+      );
+      expect(nextDay.weekday, 3);
+      expect(nextDay.day, 1);
+      expect(nextDay.month, 6);
+      expect(nextDay.year, 2022);
     });
   });
 }
