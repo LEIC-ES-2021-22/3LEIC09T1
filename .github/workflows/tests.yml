@@ -25,4 +25,6 @@ jobs:
           flutter pub get
         
       - name: Run tests
-        run: flutter test --coverage
+        run: |
+          cd app/
+          flutter test --coverage
