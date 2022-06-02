@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:tuple/tuple.dart';
@@ -25,8 +26,7 @@ Future<List<NotificationPreference>> notificationPreferences() async {
       NotificationPreference(
           isActive: true,
           antecedence: NotificationPreference.DEFAULT_ANTECEDENCE,
-          notificationType: NotificationType.classNotif.typeName
-      )
+          notificationType: NotificationType.classNotif.typeName)
     ];
     await db.saveNewPreferences(preferences);
   }
@@ -42,15 +42,20 @@ Future<List<LectureNotificationPreference>>
   return AppLectureNotificationPreferencesDatabase().preferences();
 }
 
+Future<void> resetNotifications(Store<AppState> store) async {
+  NotificationScheduler().unscheduleAll();
+  notificationSetUp(store);
+}
+
 Future<void> notificationSetUp(Store<AppState> store) async {
-  Logger().i('Getting here');
+  // TODO: this function might be useless
+  // Check if user session is persistent
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 == '' || userPersistentInfo.item2 == '') return;
 
   final List<NotificationPreference> preferences =
       await notificationPreferences();
-  Logger().i('Preferences:' + preferences.toString());
   for (NotificationPreference preference in preferences) {
     if (preference.notificationType == NotificationType.classNotif.typeName &&
         preference.isActive) {
@@ -67,15 +72,16 @@ Future<void> classNotificationSetUp(
   Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
-    if (shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
+    if (!shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
+      Logger().i(
+          'Notification Already Scheduled: ${lecture.subject}-${lecture.day}');
       continue;
     }
     final Notification notification =
         ClassNotificationFactory().buildNotification(lecture);
     alreadyScheduled.add(NotificationData(
         notification.id, lecture.id, NotificationType.classNotif.typeName));
-    NotificationScheduler(store).schedule(
-        ClassNotificationFactory().buildNotification(lecture),
+    NotificationScheduler().schedule(notification,
         ClassNotificationFactory().calculateTime(lecture, antecedence));
   }
   AppNotificationDataDatabase().saveNewNotificationData(alreadyScheduled);
@@ -86,7 +92,7 @@ bool shouldScheduleClass(
     List<NotificationData> notificationsData,
     List<LectureNotificationPreference> preferences) {
   try {
-    return NotificationData.listContainsModelId(
+    return !NotificationData.listContainsModelId(
             notificationsData, lecture.id) &&
         LectureNotificationPreference.idIsActive(preferences, lecture.id);
   } catch (e) {

@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:logger/logger.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry/sentry.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/controller/middleware.dart';
+import 'package:uni/controller/notifications/notification_scheduler.dart';
+import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
@@ -41,17 +44,6 @@ SentryEvent beforeSend(SentryEvent event) {
   return event.level == SentryLevel.info ? event : null;
 }
 
-setupNotifications() {
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('mipmap/ic_launcher');
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-  store.dispatch(SetNotificationService(FlutterLocalNotificationsPlugin()));
-  store.state.content['flutterLocalNotificationsPlugin']
-      .initialize(initializationSettings);
-}
-
 workManagerCallbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) {
     switch (taskName) {
@@ -75,7 +67,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OnStartUp.onStart(store);
   tz.initializeTimeZones();
-  await setupNotifications();
+  await NotificationScheduler.init();
   await setupWorkManager();
   await SentryFlutter.init(
     (options) {
