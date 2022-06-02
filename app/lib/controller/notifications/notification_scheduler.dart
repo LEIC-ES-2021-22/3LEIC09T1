@@ -23,9 +23,9 @@ class NotificationScheduler {
 
   static init() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('mipmap/ic_launcher');
+        AndroidInitializationSettings('mipmap/ic_launcher');
     final InitializationSettings initializationSettings =
-    InitializationSettings(
+        InitializationSettings(
       android: initializationSettingsAndroid,
     );
     _notificationPlugin = FlutterLocalNotificationsPlugin();
@@ -44,14 +44,13 @@ class NotificationScheduler {
   }
 
   Future<void> unscheduleAll() async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        this._store.state.content['flutterLocalNotificationsPlugin'];
-    flutterLocalNotificationsPlugin.cancelAll();
+    NotificationScheduler._notificationPlugin.cancelAll();
   }
 
   Future<void> schedule(
       Notification notification, tz.TZDateTime scheduledTime) async {
-    Logger().i("Scheduled Notification '${notification.toString()}' to '${scheduledTime.toString()}' ");
+    Logger().i(
+        "Scheduled Notification '${notification.toString()}' to '${scheduledTime.toString()}' ");
     await _notificationPlugin.zonedSchedule(
         notification.id,
         notification.title,

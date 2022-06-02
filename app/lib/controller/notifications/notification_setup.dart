@@ -43,7 +43,7 @@ Future<List<LectureNotificationPreference>>
 }
 
 Future<void> resetNotifications(Store<AppState> store) async {
-  NotificationScheduler(store).unscheduleAll();
+  NotificationScheduler().unscheduleAll();
   notificationSetUp(store);
 }
 
@@ -73,15 +73,15 @@ Future<void> classNotificationSetUp(
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
     if (!shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
-      Logger().i("Notification Already Scheduled: ${lecture.subject}-${lecture.day}");
+      Logger().i(
+          'Notification Already Scheduled: ${lecture.subject}-${lecture.day}');
       continue;
     }
     final Notification notification =
         ClassNotificationFactory().buildNotification(lecture);
     alreadyScheduled.add(NotificationData(
         notification.id, lecture.id, NotificationType.classNotif.typeName));
-    NotificationScheduler().schedule(
-        notification,
+    NotificationScheduler().schedule(notification,
         ClassNotificationFactory().calculateTime(lecture, antecedence));
   }
   AppNotificationDataDatabase().saveNewNotificationData(alreadyScheduled);
