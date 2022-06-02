@@ -26,8 +26,7 @@ Future<List<NotificationPreference>> notificationPreferences() async {
       NotificationPreference(
           isActive: true,
           antecedence: NotificationPreference.DEFAULT_ANTECEDENCE,
-          notificationType: NotificationType.classNotif.typeName
-      )
+          notificationType: NotificationType.classNotif.typeName)
     ];
     await db.saveNewPreferences(preferences);
   }
@@ -88,7 +87,7 @@ bool shouldScheduleClass(
     List<NotificationData> notificationsData,
     List<LectureNotificationPreference> preferences) {
   try {
-    return NotificationData.listContainsModelId(
+    return !NotificationData.listContainsModelId(
             notificationsData, lecture.id) &&
         LectureNotificationPreference.idIsActive(preferences, lecture.id);
   } catch (e) {
