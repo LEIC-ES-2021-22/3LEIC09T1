@@ -43,6 +43,12 @@ class NotificationScheduler {
     return NotificationDetails(android: androidPlatformChannelSpecifics);
   }
 
+  Future<void> unscheduleAll() async {
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        this._store.state.content['flutterLocalNotificationsPlugin'];
+    flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   Future<void> schedule(
       Notification notification, tz.TZDateTime scheduledTime) async {
     Logger().i("Scheduled Notification '${notification.toString()}' to '${scheduledTime.toString()}' ");

@@ -42,15 +42,20 @@ Future<List<LectureNotificationPreference>>
   return AppLectureNotificationPreferencesDatabase().preferences();
 }
 
+Future<void> resetNotifications(Store<AppState> store) async {
+  NotificationScheduler(store).unscheduleAll();
+  notificationSetUp(store);
+}
+
 Future<void> notificationSetUp(Store<AppState> store) async {
-  Logger().i('Getting here');
+  // TODO: this function might be useless
+  // Check if user session is persistent
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 == '' || userPersistentInfo.item2 == '') return;
 
   final List<NotificationPreference> preferences =
       await notificationPreferences();
-  Logger().i('Preferences:' + preferences.toString());
   for (NotificationPreference preference in preferences) {
     if (preference.notificationType == NotificationType.classNotif.typeName &&
         preference.isActive) {
@@ -67,7 +72,7 @@ Future<void> classNotificationSetUp(
   Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
-    if (shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
+    if (!shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
       Logger().i("Notification Already Scheduled: ${lecture.subject}-${lecture.day}");
       continue;
     }
@@ -76,7 +81,7 @@ Future<void> classNotificationSetUp(
     alreadyScheduled.add(NotificationData(
         notification.id, lecture.id, NotificationType.classNotif.typeName));
     NotificationScheduler().schedule(
-        ClassNotificationFactory().buildNotification(lecture),
+        notification,
         ClassNotificationFactory().calculateTime(lecture, antecedence));
   }
   AppNotificationDataDatabase().saveNewNotificationData(alreadyScheduled);
