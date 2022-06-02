@@ -60,10 +60,6 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
         await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
         action?.complete();
-
-        // Notifications
-        // await loadNotificationData(store);
-        notificationSetUp(store); // Schedule notifications
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
         action?.completeError(RequestStatus.failed);
@@ -105,10 +101,7 @@ ThunkAction<AppState> login(username, password, faculties, persistentSession,
         usernameController.clear();
         passwordController.clear();
         await acceptTermsAndConditions();
-
-        // Notifications
-        // await loadNotificationData(store);
-        notificationSetUp(store); // Schedule notifications
+        await notificationSetUp(store);
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
       }

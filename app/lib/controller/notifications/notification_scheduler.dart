@@ -8,9 +8,29 @@ import 'package:uni/model/notifications/notification.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationScheduler {
-  final Store<AppState> _store;
+  static var _notificationPlugin = null;
 
-  NotificationScheduler(this._store);
+  static get notificationPlugin {
+    return _notificationPlugin;
+  }
+
+  NotificationScheduler() {
+    if (_notificationPlugin == null) {
+      throw Exception(
+          'Instantiated Notification Scheduler without initializing it');
+    }
+  }
+
+  static init() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('mipmap/ic_launcher');
+    final InitializationSettings initializationSettings =
+    InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    _notificationPlugin = FlutterLocalNotificationsPlugin();
+    await _notificationPlugin.initialize(initializationSettings);
+  }
 
   static NotificationDetails _buildPlatformChannelSpecifics(
       Notification notification) {
@@ -31,11 +51,8 @@ class NotificationScheduler {
 
   Future<void> schedule(
       Notification notification, tz.TZDateTime scheduledTime) async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        this._store.state.content['flutterLocalNotificationsPlugin'];
-    Logger()
-        .i('LocalNotifPlugin:' + flutterLocalNotificationsPlugin.toString());
-    await flutterLocalNotificationsPlugin.zonedSchedule(
+    Logger().i("Scheduled Notification '${notification.toString()}' to '${scheduledTime.toString()}' ");
+    await _notificationPlugin.zonedSchedule(
         notification.id,
         notification.title,
         notification.body,
@@ -44,11 +61,5 @@ class NotificationScheduler {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true);
-  }
-
-  Future<void> scheduleAll() async {
-    final List<NotificationPreference> preferences =
-        await this._store.state.content['userNotificationPreferences'];
-    Logger().i('Preferences:' + preferences.toString());
   }
 }

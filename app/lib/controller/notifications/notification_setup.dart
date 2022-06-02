@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:tuple/tuple.dart';
@@ -70,16 +71,17 @@ Future<void> classNotificationSetUp(
   final alreadyScheduled = await notificationsData();
   Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
-  final NotificationScheduler scheduler = NotificationScheduler(store);
   for (Lecture lecture in lectures) {
-    if (shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
+    if (!shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
+      Logger().i("Notification Already Scheduled: ${lecture.subject}-${lecture.day}");
       continue;
     }
     final Notification notification =
         ClassNotificationFactory().buildNotification(lecture);
     alreadyScheduled.add(NotificationData(
         notification.id, lecture.id, NotificationType.classNotif.typeName));
-    scheduler.schedule(ClassNotificationFactory().buildNotification(lecture),
+    NotificationScheduler().schedule(
+        notification,
         ClassNotificationFactory().calculateTime(lecture, antecedence));
   }
   AppNotificationDataDatabase().saveNewNotificationData(alreadyScheduled);
@@ -90,7 +92,7 @@ bool shouldScheduleClass(
     List<NotificationData> notificationsData,
     List<LectureNotificationPreference> preferences) {
   try {
-    return NotificationData.listContainsModelId(
+    return !NotificationData.listContainsModelId(
             notificationsData, lecture.id) &&
         LectureNotificationPreference.idIsActive(preferences, lecture.id);
   } catch (e) {
