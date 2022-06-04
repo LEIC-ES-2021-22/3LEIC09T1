@@ -111,6 +111,18 @@ The change of a notification's preferences/definitions by the user is done throu
 
 ![Package diagram](img/LogicalArchitecture.png)
 
+ - Notificaiton Delivery System: This package will take the information about a certain model (class model, tuition model, etc) and will schedule a notification that will display that model information based on the settings defined by the user
+
+ - Notification Settings: This package will handle all the settings that the user can change. For example, if a certain kind of notification is turned on or off, and how much time before an event it should be displayed
+
+ - Notification Settings Database: This package will store all the settings about the delivery of notifications
+ 
+ - Tuition Data Retriever: This package will retrieve all the data related to tuitions like the value of a single installment and until when it should be payed
+ 
+ - Course Database: This package will handle all the data provided by Sigarra about which couses is the user taking and how many tuitions the used still needs to pay 
+ 
+ - Class Data Retriever: This package will retrieve all the data about a class like what time does the class start, in which room will it take place, etc
+ Sigarra Database: Sigarra database has all the information about a user stored
 
 ### Physical Architecture
 
