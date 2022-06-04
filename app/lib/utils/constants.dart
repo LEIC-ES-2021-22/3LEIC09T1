@@ -28,6 +28,23 @@ const faculties = [
 
 enum NotificationType { classNotif, tuitionNotif }
 
+extension NotificationWidgetData on NotificationType {
+  static const notificationAntecedenceMaxValues = {
+    NotificationType.classNotif: 30.0
+  };
+  static const notificationAntecedenceGranularities = {
+    NotificationType.classNotif: 5
+  };
+
+  static const notificationAntecedenceSuffixes = {
+    NotificationType.classNotif: 'minutos antes da próxima aula.'
+  };
+
+  double get antecedenceMaxValue => notificationAntecedenceMaxValues[this];
+  int get antecedenceGranularity => notificationAntecedenceGranularities[this];
+  String get antecedenceSuffix => notificationAntecedenceSuffixes[this];
+}
+
 extension NotificationTypeData on NotificationType {
   static const typeNames = {
     NotificationType.classNotif: 'class notification',
@@ -40,8 +57,8 @@ extension NotificationTypeData on NotificationType {
   };
 
   static const channelNames = {
-    NotificationType.classNotif: 'Notificações de Aulas',
-    NotificationType.tuitionNotif: 'Notificações de Pagamento de propinas'
+    NotificationType.classNotif: 'Notificações sobre Aulas',
+    NotificationType.tuitionNotif: 'Notificações sobre Pagamento de propinas'
   };
 
   static const channelDescriptions = {
