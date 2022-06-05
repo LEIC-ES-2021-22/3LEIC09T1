@@ -17,7 +17,7 @@ class ClassNotificationScheduleTask {
           frequency: Duration(days: 7),
           // Delays initial job to sunday
           initialDelay: Duration(
-              days: calculateDelayBetweenDays(
+              days: delayBetweenDays(
               now: tz.TZDateTime.now(tz.local),
               indexDayOfWeek: 5)
           )
