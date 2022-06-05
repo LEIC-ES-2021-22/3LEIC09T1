@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:uni/controller/local_storage/app_database.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uni/model/entities/notification_preference.dart';
+import 'package:uni/utils/constants.dart';
 
 /// Manages the app's Notification Preferences database.
 ///
@@ -54,6 +55,32 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
+  }
+
+  Future<NotificationPreference> getPreference(NotificationType type) async {
+    final Database db = await this.getDatabase();
+
+    // This list only contains more than one element if primary key is broken
+    final List<Map<String, dynamic>> rawPreferences = await db.query(
+        'notification_preferences',
+        where: 'notificationType = ?',
+        whereArgs: [type.typeName]
+    );
+
+    final wantedPreference = rawPreferences[0];
+    return NotificationPreference.fromHtml(wantedPreference['isActive'],
+        wantedPreference['antecedence'], wantedPreference['notificationType']);
+  }
+
+  Future<void> replacePreference(NotificationPreference preference) async {
+    final Database db = await this.getDatabase();
+    Logger().d("Updating preference: ${preference.toMap()}");
+    await db.update(
+        'notification_preferences',
+        preference.toMap(),
+        where: 'notificationType = ?',
+        whereArgs: [preference.notificationType]
+    );
   }
 
   /// Deletes all of the data stored in this database.
