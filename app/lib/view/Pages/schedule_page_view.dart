@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
+import 'package:uni/view/Widgets/button_stateful.dart';
 
 /// Manages the 'schedule' sections of the app
 class SchedulePageView extends StatelessWidget {
@@ -87,16 +88,7 @@ class SchedulePageView extends StatelessWidget {
             teacher: lecture.teacher,
             classNumber: lecture.classNumber,
           ),
-          Align(
-              alignment: Alignment(0.65, 0),
-              child: Transform.scale(
-                  scale: 0.8,
-                  child: FloatingActionButton(
-                      onPressed: () {
-                        setIcon(ic); // Add more functions to do things here!
-                      },
-                      child: new Icon(ic),
-                      heroTag: null)))
+          ScheduleButton()
         ],
       );
 
@@ -134,10 +126,10 @@ class SchedulePageView extends StatelessWidget {
 
   IconData setIcon(IconData ic) {
     if (ic == Icons.alarm_add_rounded) {
-      print("Change to off");
+      print("Change to on");
       ic = Icons.alarm_off_rounded;
     } else {
-      print("Change to on");
+      print("Change to off");
       ic = Icons.alarm_add_rounded;
     }
     return ic;
