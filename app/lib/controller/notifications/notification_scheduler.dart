@@ -52,13 +52,15 @@ class NotificationScheduler {
     Logger().i(
         "Scheduled Notification '${notification.toString()}' to '${scheduledTime.toString()}' ");
     await _notificationPlugin.zonedSchedule(
-        notification.id,
-        notification.title,
-        notification.body,
-        scheduledTime,
-        _buildPlatformChannelSpecifics(notification),
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle: true);
+      notification.id,
+      notification.title,
+      notification.body,
+      scheduledTime,
+      _buildPlatformChannelSpecifics(notification),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidAllowWhileIdle: true,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
+    );
   }
 }

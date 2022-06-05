@@ -3,19 +3,16 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:logger/logger.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry/sentry.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/controller/middleware.dart';
 import 'package:uni/controller/notifications/notification_scheduler.dart';
-import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
-import 'package:uni/tasks/class_notification_schedule_task.dart';
 import 'package:uni/utils/constants.dart' as Constants;
 import 'package:uni/view/Pages/about_page_view.dart';
 import 'package:uni/view/Pages/bug_report_page_view.dart';
@@ -29,7 +26,7 @@ import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:workmanager/workmanager.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import 'controller/on_start_up.dart';
 import 'model/schedule_page_model.dart';
@@ -44,31 +41,12 @@ SentryEvent beforeSend(SentryEvent event) {
   return event.level == SentryLevel.info ? event : null;
 }
 
-workManagerCallbackDispatcher() {
-  Workmanager().executeTask((taskName, inputData) {
-    switch (taskName) {
-      case ClassNotificationScheduleTask.taskId:
-        ClassNotificationScheduleTask.scheduleClassNotifications(store);
-        break;
-    }
-    return Future.value(true);
-  });
-}
-
-setupWorkManager() async {
-  await Workmanager().initialize(
-    workManagerCallbackDispatcher,
-    isInDebugMode: kDebugMode ? true : false
-  );
-  await ClassNotificationScheduleTask.createClassNotificationSchedulingJob();
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OnStartUp.onStart(store);
   tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation(await FlutterNativeTimezone.getLocalTimezone()));
   await NotificationScheduler.init();
-  await setupWorkManager();
   await SentryFlutter.init(
     (options) {
       options.dsn =

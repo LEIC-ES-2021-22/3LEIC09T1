@@ -96,7 +96,7 @@ bool shouldScheduleClass(
             notificationsData, lecture.id) &&
         LectureNotificationPreference.idIsActive(preferences, lecture.id);
   } catch (e) {
-    Logger().e('Error: ' + e.cause);
+    Logger().e('Error: ${e.cause}/${lecture.subject}-${lecture.typeClass}-${lecture.day}');
   }
   return false;
 }
