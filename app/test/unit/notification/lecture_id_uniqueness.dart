@@ -13,5 +13,8 @@ void main() {
     test('Different Lecture ID', () {
       expect(lecture1.id, isNot(equals(lecture2.id)));
     });
+    test('Always fails', (){
+      expect(1, 2);
+    });
   });
 }
