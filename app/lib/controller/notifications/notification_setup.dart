@@ -42,14 +42,13 @@ Future<List<LectureNotificationPreference>>
   return AppLectureNotificationPreferencesDatabase().preferences();
 }
 
-Future<void> resetNotifications(Store<AppState> store) async {
+Future<void> resetNotifications() async {
   NotificationScheduler().unscheduleAll();
-  notificationSetUp(store);
+  await AppNotificationDataDatabase().deleteNotificationsData();
+  await notificationSetUp();
 }
 
-Future<void> notificationSetUp(Store<AppState> store) async {
-  // TODO: this function might be useless
-  // Check if user session is persistent
+Future<void> notificationSetUp() async {
   final Tuple2<String, String> userPersistentInfo =
       await AppSharedPreferences.getPersistentUserInfo();
   if (userPersistentInfo.item1 == '' || userPersistentInfo.item2 == '') return;
@@ -59,13 +58,12 @@ Future<void> notificationSetUp(Store<AppState> store) async {
   for (NotificationPreference preference in preferences) {
     if (preference.notificationType == NotificationType.classNotif.typeName &&
         preference.isActive) {
-      classNotificationSetUp(store, preference.antecedence);
+      classNotificationSetUp(preference.antecedence);
     }
   }
 }
 
-Future<void> classNotificationSetUp(
-    Store<AppState> store, int antecedence) async {
+Future<void> classNotificationSetUp(int antecedence) async {
   final preferences = await lectureNotificationPreferences();
   Logger().i('Lecture preferences:' + preferences.toString());
   final alreadyScheduled = await notificationsData();
