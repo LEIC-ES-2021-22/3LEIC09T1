@@ -11,6 +11,7 @@ class ScheduleButtonState extends State<ScheduleButton> {
   IconData ic = Icons.alarm_add_rounded;
 
   void onPressed() {
+    //add another function here if needed
     setState(() {
       fabIconNumber = fabIconNumber % 2 == 0 ? 0 : 1;
       ic = icons[fabIconNumber];
