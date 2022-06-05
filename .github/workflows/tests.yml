@@ -25,6 +25,10 @@ jobs:
         run: |
           cd app/
           flutter pub get
+      
+      - name: lser
+        run: |
+          ls app/tests/unit/notification
         
       - name: Run tests
         run: |
