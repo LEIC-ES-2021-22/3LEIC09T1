@@ -40,6 +40,25 @@ class AppLectureNotificationPreferencesDatabase extends AppDatabase {
     this.saveNewLectureNotificationPreferences(preferences);
   }
 
+  Future<void> setNotificationPreference(int lectureId, bool activationValue) async {
+    final Database db = await this.getDatabase();
+
+    await db.update('lectureNotificationPreferences', {
+      'isActive': activationValue
+    }, where: 'id = ?', whereArgs: [lectureId]);
+  }
+
+  Future<bool> getNotificationPreference(int lectureId) async {
+    final Database db = await this.getDatabase();
+    var preference = await db.query(
+        'lectureNotificationPreferences',
+        columns: ['isActive'],
+        where: 'id = ?',
+        whereArgs: [lectureId]
+    );
+    return preference[0]['isActive'] == 1 ? true : false;
+  }
+
   /// Returns a list containing all of the lectures stored in this database.
   Future<List<LectureNotificationPreference>> preferences() async {
     // Get a reference to the database

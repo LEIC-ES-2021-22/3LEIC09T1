@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uni/controller/local_storage/app_lecture_notification_preferences_database.dart';
+import 'package:uni/controller/notifications/notification_setup.dart';
 
 class ScheduleButton extends StatefulWidget {
   final int lectureId;
@@ -19,13 +21,29 @@ class ScheduleButtonState extends State<ScheduleButton> {
 
   ScheduleButtonState({
     @required this.lectureId
-  });
+  }) {
+    retrieveActivationStatus();
+  }
+
+  void retrieveActivationStatus() async {
+    notificationActivated = await AppLectureNotificationPreferencesDatabase()
+      .getNotificationPreference(
+        lectureId
+      );
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   void onPressed() {
-    //add another function here if needed
     setState(() {
       notificationActivated = !notificationActivated;
     });
+    AppLectureNotificationPreferencesDatabase().setNotificationPreference(
+        lectureId,
+        notificationActivated
+    );
+    resetNotifications();
   }
 
   @override
