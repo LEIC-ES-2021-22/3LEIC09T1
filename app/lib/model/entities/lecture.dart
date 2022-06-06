@@ -33,7 +33,7 @@ class Lecture {
     //We assume that there is only one class of a given type in a given day
     BigInt agregatedId = BigInt.from(0);
     List<int> hashBytes =
-        sha256.convert(utf8.encode('$subject-$typeClass-$day')).bytes;
+        sha256.convert(utf8.encode('$subject-$typeClass-$day-$startTime-$room')).bytes;
     for (var byte in hashBytes) {
       agregatedId += BigInt.from(byte);
     }
@@ -181,13 +181,13 @@ class Lecture {
   @override
   bool operator ==(o) =>
       o is Lecture &&
-      this.subject == o.subject &&
-      this.startTime == o.startTime &&
-      this.endTime == o.endTime &&
-      this.typeClass == o.typeClass &&
-      this.room == o.room &&
-      this.teacher == o.teacher &&
-      this.day == o.day &&
-      this.blocks == o.blocks &&
-      this.startTimeSeconds == o.startTimeSeconds;
+          this.subject == o.subject &&
+          this.startTime == o.startTime &&
+          this.endTime == o.endTime &&
+          this.typeClass == o.typeClass &&
+          this.room == o.room &&
+          this.teacher == o.teacher &&
+          this.day == o.day &&
+          this.blocks == o.blocks &&
+          this.startTimeSeconds == o.startTimeSeconds;
 }
