@@ -101,7 +101,9 @@ class SchedulePageView extends StatelessWidget {
             teacher: lecture.teacher,
             classNumber: lecture.classNumber,
           ),
-          ScheduleButton()
+          ScheduleButton(
+            lectureId: lecture.id
+          )
         ],
       );
 
