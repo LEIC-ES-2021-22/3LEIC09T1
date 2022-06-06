@@ -51,10 +51,7 @@ class SchedulePageView extends StatelessWidget {
         child: ElevatedButton(
           child: const Text('Ver menu notificações'),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => NotificationSettingsPageView()));
+            NotificationSettingsPageView();
           },
         ),
       )
