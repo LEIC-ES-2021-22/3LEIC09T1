@@ -33,7 +33,7 @@ extension NotificationWidgetData on NotificationType {
     NotificationType.classNotif: 30.0
   };
   static const notificationAntecedenceGranularities = {
-    NotificationType.classNotif: 5
+    NotificationType.classNotif: 6
   };
 
   static const notificationAntecedenceSuffixes = {
