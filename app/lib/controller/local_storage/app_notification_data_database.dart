@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:uni/model/entities/notification_data.dart';
 import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/model/notifications/notification.dart';
+import 'package:uni/utils/constants.dart';
 
 /// Manages the app's Notifications Data database.
 ///

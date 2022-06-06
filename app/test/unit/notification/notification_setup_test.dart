@@ -13,6 +13,9 @@ void main() {
   group('Notification Setup Helpers Test', () {
     test('shouldScheduleClass test', () {
       final lecture = MockLecture();
+      when(lecture.subject).thenReturn('a');
+      when(lecture.typeClass).thenReturn('a');
+      when(lecture.day).thenReturn(1);
       final List<LectureNotificationPreference> preferences = [
         LectureNotificationPreference(1, true),
         LectureNotificationPreference(2, false),

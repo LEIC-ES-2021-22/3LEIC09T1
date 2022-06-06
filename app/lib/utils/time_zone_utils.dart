@@ -9,7 +9,7 @@ int delayBetweenDays({
   @required tz.TZDateTime now,
   @required int indexDayOfWeek
 }) {
-  return ((indexDayOfWeek - (now.weekday - 1)) % DAYS_IN_WEEK) - 1;
+  return ((indexDayOfWeek - (now.weekday - 1)) % DAYS_IN_WEEK);
 }
 
 /// Creates a TZDateTime for the same week day in the next week

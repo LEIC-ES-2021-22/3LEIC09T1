@@ -5,6 +5,7 @@ import 'package:uni/utils/constants.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 import 'package:uni/view/Widgets/notification_setting.dart';
 import 'package:uni/view/Widgets/page_title.dart';
+import 'package:uni/controller/notifications/notification_setup.dart';
 
 class NotificationSettingsPageView extends StatefulWidget {
   @override
@@ -71,6 +72,7 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
     if (mounted) {
       setState(() => _editedPreferences = false);
     }
+    await resetNotifications();
   }
 
   @override

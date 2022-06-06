@@ -12,7 +12,9 @@ jobs:
 
     steps:
       - name: Checkout Code from PR/Commit
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v2.0.1
