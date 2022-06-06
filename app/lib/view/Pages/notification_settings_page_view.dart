@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
 import 'package:uni/model/entities/notification_preference.dart';
+import 'package:uni/model/schedule_page_model.dart';
 import 'package:uni/utils/constants.dart';
+import 'package:uni/view/Pages/schedule_page_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 import 'package:uni/view/Widgets/notification_setting.dart';
 import 'package:uni/view/Widgets/page_title.dart';
@@ -16,10 +18,9 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
   var _editedPreferences = false;
   final Map<NotificationType, NotificationPreference> notificationSettings = {
     NotificationType.classNotif: NotificationPreference(
-      antecedence: 0,
-      notificationType: NotificationType.classNotif.typeName,
-      isActive: false
-    )
+        antecedence: 0,
+        notificationType: NotificationType.classNotif.typeName,
+        isActive: false)
   };
 
   NotificationSettingsPageViewState() {
@@ -39,15 +40,13 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
   getCommitButtons() {
     if (_editedPreferences) {
       return Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+          padding: EdgeInsets.all(10),
+          child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             ElevatedButton(
               child: Text('Descartar'),
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)
-              ),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.grey)),
               onPressed: () {
                 retrieveSettingsFromDatabase();
               },
@@ -57,9 +56,7 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
               child: Text('Guardar'),
               onPressed: savePreferences,
             ),
-          ]
-        )
-      );
+          ]));
     }
     return SizedBox.shrink();
   }
@@ -79,28 +76,38 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
   Widget getBody(BuildContext context) {
     return Column(
       children: <Widget>[
-        PageTitle(
-          name: 'Notificações'
-        ),
+        PageTitle(name: 'Notificações'),
         NotificationSetting(
           notificationType: NotificationType.classNotif,
           switched: notificationSettings[NotificationType.classNotif].isActive,
           onSwitchChanged: (value) {
             setState(() {
               _editedPreferences = true;
-              notificationSettings[NotificationType.classNotif]
-                  .isActive = value;
+              notificationSettings[NotificationType.classNotif].isActive =
+                  value;
             });
           },
           onSliderChanged: (value) {
             setState(() => _editedPreferences = true);
-            notificationSettings[NotificationType.classNotif]
-                .antecedence = value.toInt();
+            notificationSettings[NotificationType.classNotif].antecedence =
+                value.toInt();
           },
-          initialSliderValue: notificationSettings[NotificationType.classNotif]
-              .antecedence,
+          initialSliderValue:
+              notificationSettings[NotificationType.classNotif].antecedence,
         ),
-        getCommitButtons()
+        getCommitButtons(),
+        Align(
+          alignment: Alignment(0, 0.5),
+          child: ElevatedButton(
+            child: const Text('Ver Horário'),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SchedulePage()));
+            },
+          ),
+        )
       ],
     );
   }

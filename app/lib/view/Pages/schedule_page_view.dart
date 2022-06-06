@@ -1,6 +1,7 @@
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
+import 'package:uni/view/Pages/notification_settings_page_view.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
@@ -44,7 +45,19 @@ class SchedulePageView extends StatelessWidget {
           child: TabBarView(
         controller: tabController,
         children: createSchedule(context),
-      ))
+      )),
+      Align(
+        alignment: Alignment(0, 0.5),
+        child: ElevatedButton(
+          child: const Text('Ver menu notificações'),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NotificationSettingsPageView()));
+          },
+        ),
+      )
     ]);
   }
 
