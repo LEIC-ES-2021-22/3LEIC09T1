@@ -126,10 +126,8 @@ class SchedulePageView extends StatelessWidget {
 
   IconData setIcon(IconData ic) {
     if (ic == Icons.alarm_add_rounded) {
-      print("Change to on");
       ic = Icons.alarm_off_rounded;
     } else {
-      print("Change to off");
       ic = Icons.alarm_add_rounded;
     }
     return ic;
