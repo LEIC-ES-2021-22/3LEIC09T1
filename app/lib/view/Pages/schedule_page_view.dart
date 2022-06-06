@@ -47,7 +47,7 @@ class SchedulePageView extends StatelessWidget {
         children: createSchedule(context),
       )),
       Align(
-        alignment: Alignment(0, 0.5),
+        alignment: Alignment.center,
         child: ElevatedButton(
           child: const Text('Ver menu notificações'),
           onPressed: () {

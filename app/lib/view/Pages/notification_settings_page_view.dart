@@ -97,7 +97,7 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
         ),
         getCommitButtons(),
         Align(
-          alignment: Alignment(0, 0.5),
+          alignment: Alignment.center,
           child: ElevatedButton(
             child: const Text('Ver Horário'),
             onPressed: () {
