@@ -64,8 +64,7 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
     final List<Map<String, dynamic>> rawPreferences = await db.query(
         'notification_preferences',
         where: 'notificationType = ?',
-        whereArgs: [type.typeName]
-    );
+        whereArgs: [type.typeName]);
 
     final wantedPreference = rawPreferences[0];
     return NotificationPreference.fromHtml(wantedPreference['isActive'],
@@ -74,13 +73,10 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
 
   Future<void> replacePreference(NotificationPreference preference) async {
     final Database db = await this.getDatabase();
-    Logger().d("Updating preference: ${preference.toMap()}");
-    await db.update(
-        'notification_preferences',
-        preference.toMap(),
+    Logger().d('Updating preference: ${preference.toMap()}');
+    await db.update('notification_preferences', preference.toMap(),
         where: 'notificationType = ?',
-        whereArgs: [preference.notificationType]
-    );
+        whereArgs: [preference.notificationType]);
   }
 
   /// Deletes all of the data stored in this database.

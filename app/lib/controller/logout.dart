@@ -16,6 +16,7 @@ import 'package:uni/controller/local_storage/app_lectures_database.dart';
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
+import 'package:uni/controller/notifications/notification_setup.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/redux/action_creators.dart';
 import 'package:uni/view/Pages/general_page_view.dart';
@@ -24,9 +25,10 @@ Future logout(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.clear();
 
-  AppLectureNotificationPreferencesDatabase()
+  await AppLectureNotificationPreferencesDatabase()
       .deleteLectureNotificationPreferences();
-  AppNotificationPreferencesDatabase().deletePreferences();
+  await AppNotificationPreferencesDatabase().deletePreferences();
+  await deleteNotifications();
   AppLecturesDatabase().deleteLectures();
   AppExamsDatabase().deleteExams();
   AppCoursesDatabase().deleteCourses();

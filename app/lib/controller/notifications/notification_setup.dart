@@ -1,6 +1,4 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
-import 'package:redux/redux.dart';
 import 'package:tuple/tuple.dart';
 import 'package:uni/controller/local_storage/app_lecture_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
@@ -8,7 +6,6 @@ import 'package:uni/controller/local_storage/app_notification_data_database.dart
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/notifications/notification_scheduler.dart';
-import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:uni/model/entities/lecture_notification_preference.dart';
 import 'package:uni/model/entities/notification_data.dart';
@@ -42,9 +39,13 @@ Future<List<LectureNotificationPreference>>
   return AppLectureNotificationPreferencesDatabase().preferences();
 }
 
-Future<void> resetNotifications() async {
+Future<void> deleteNotifications() async {
   NotificationScheduler().unscheduleAll();
   await AppNotificationDataDatabase().deleteNotificationsData();
+}
+
+Future<void> resetNotifications() async {
+  await deleteNotifications();
   await notificationSetUp();
 }
 
@@ -94,7 +95,8 @@ bool shouldScheduleClass(
             notificationsData, lecture.id) &&
         LectureNotificationPreference.idIsActive(preferences, lecture.id);
   } catch (e) {
-    Logger().e('Error: ${e.cause}/${lecture.subject}-${lecture.typeClass}-${lecture.day}');
+    Logger().e(
+        'Error: ${e.cause}/${lecture.subject}-${lecture.typeClass}-${lecture.day}');
   }
   return false;
 }
