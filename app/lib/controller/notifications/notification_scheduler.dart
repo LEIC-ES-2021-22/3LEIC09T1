@@ -1,8 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
-import 'package:redux/redux.dart';
-import 'package:uni/model/app_state.dart';
-import 'package:uni/model/entities/notification_preference.dart';
 import 'package:uni/utils/constants.dart';
 import 'package:uni/model/notifications/notification.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -44,6 +41,7 @@ class NotificationScheduler {
   }
 
   Future<void> unscheduleAll() async {
+    Logger().i('Unscheduling all notifications');
     NotificationScheduler._notificationPlugin.cancelAll();
   }
 
@@ -52,15 +50,14 @@ class NotificationScheduler {
     Logger().i(
         "Scheduled Notification '${notification.toString()}' to '${scheduledTime.toString()}' ");
     await _notificationPlugin.zonedSchedule(
-      notification.id,
-      notification.title,
-      notification.body,
-      scheduledTime,
-      _buildPlatformChannelSpecifics(notification),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
-      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
-    );
+        notification.id,
+        notification.title,
+        notification.body,
+        scheduledTime,
+        _buildPlatformChannelSpecifics(notification),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        androidAllowWhileIdle: true,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
   }
 }

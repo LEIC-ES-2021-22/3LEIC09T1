@@ -1,6 +1,4 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
-import 'package:redux/redux.dart';
 import 'package:tuple/tuple.dart';
 import 'package:uni/controller/local_storage/app_lecture_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
@@ -8,7 +6,6 @@ import 'package:uni/controller/local_storage/app_notification_data_database.dart
 import 'package:uni/controller/local_storage/app_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/notifications/notification_scheduler.dart';
-import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:uni/model/entities/lecture_notification_preference.dart';
 import 'package:uni/model/entities/notification_data.dart';
@@ -34,17 +31,37 @@ Future<List<NotificationPreference>> notificationPreferences() async {
 }
 
 Future<List<NotificationData>> notificationsData() async {
-  return AppNotificationDataDatabase().notificationsData();
+  return await AppNotificationDataDatabase().notificationsData();
 }
 
 Future<List<LectureNotificationPreference>>
     lectureNotificationPreferences() async {
-  return AppLectureNotificationPreferencesDatabase().preferences();
+  final AppLecturesDatabase lecturesDb = AppLecturesDatabase();
+  final AppLectureNotificationPreferencesDatabase
+      lecturesNotificationPreferencesDb =
+      AppLectureNotificationPreferencesDatabase();
+  List<Lecture> lectures = await lecturesDb.lectures();
+  final List<LectureNotificationPreference> lectureNotificationPreferences =
+      await lecturesNotificationPreferencesDb.preferences();
+  // While lectures have not been saved in database from remote
+  while (lectures.isEmpty) {
+    await Future.delayed(const Duration(milliseconds: 100));
+    lectures = await lecturesDb.lectures();
+  }
+  if (lectures.length > lectureNotificationPreferences.length) {
+    await lecturesNotificationPreferencesDb
+        .saveNewPreferencesThroughLectures(lectures);
+  }
+  return await AppLectureNotificationPreferencesDatabase().preferences();
+}
+
+Future<void> deleteNotifications() async {
+  NotificationScheduler().unscheduleAll();
+  await AppNotificationDataDatabase().deleteNotificationsData();
 }
 
 Future<void> resetNotifications() async {
-  NotificationScheduler().unscheduleAll();
-  await AppNotificationDataDatabase().deleteNotificationsData();
+  await deleteNotifications();
   await notificationSetUp();
 }
 
@@ -65,9 +82,7 @@ Future<void> notificationSetUp() async {
 
 Future<void> classNotificationSetUp(int antecedence) async {
   final preferences = await lectureNotificationPreferences();
-  Logger().i('Lecture preferences:' + preferences.toString());
   final alreadyScheduled = await notificationsData();
-  Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
     if (!shouldScheduleClass(lecture, alreadyScheduled, preferences)) {
@@ -94,7 +109,8 @@ bool shouldScheduleClass(
             notificationsData, lecture.id) &&
         LectureNotificationPreference.idIsActive(preferences, lecture.id);
   } catch (e) {
-    Logger().e('Error: ${e.cause}/${lecture.subject}-${lecture.typeClass}-${lecture.day}');
+    Logger().e(
+        'Error: ${e.cause}/${lecture.subject}-${lecture.typeClass}-${lecture.day}');
   }
   return false;
 }

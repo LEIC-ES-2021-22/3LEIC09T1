@@ -5,7 +5,7 @@ import 'package:uni/view/Pages/notification_settings_page_view.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
-import 'package:uni/view/Widgets/button_stateful.dart';
+import 'package:uni/view/Widgets/schedule_button_stateful.dart';
 
 /// Manages the 'schedule' sections of the app
 class SchedulePageView extends StatelessWidget {
@@ -88,9 +88,7 @@ class SchedulePageView extends StatelessWidget {
     for (int i = 0; i < lectures.length; i++) {
       final Lecture lecture = lectures[i];
 
-      IconData ic = Icons.alarm_add_rounded;
-
-      Stack stk = Stack(
+      final Stack stk = Stack(
         children: <Widget>[
           ScheduleSlot(
             subject: lecture.subject,
@@ -101,9 +99,7 @@ class SchedulePageView extends StatelessWidget {
             teacher: lecture.teacher,
             classNumber: lecture.classNumber,
           ),
-          ScheduleButton(
-            lectureId: lecture.id
-          )
+          ScheduleButton(lectureId: lecture.id)
         ],
       );
 

@@ -26,6 +26,7 @@ class AppLectureNotificationPreferencesDatabase extends AppDatabase {
   /// Replaces all of the data in this database with [preferences].
   saveNewLectureNotificationPreferences(
       List<LectureNotificationPreference> preferences) async {
+    Logger().i('Saving new lecture preferences: ${preferences}');
     await deleteLectureNotificationPreferences();
     await _insertLectureNotificationPreferences(preferences);
   }
@@ -37,25 +38,23 @@ class AppLectureNotificationPreferencesDatabase extends AppDatabase {
     for (Lecture l in lectures) {
       preferences.add(LectureNotificationPreference(l.id, true));
     }
-    this.saveNewLectureNotificationPreferences(preferences);
+    await this.saveNewLectureNotificationPreferences(preferences);
   }
 
-  Future<void> setNotificationPreference(int lectureId, bool activationValue) async {
+  Future<void> setNotificationPreference(
+      int lectureId, bool activationValue) async {
     final Database db = await this.getDatabase();
-
-    await db.update('lectureNotificationPreferences', {
-      'isActive': activationValue
-    }, where: 'id = ?', whereArgs: [lectureId]);
+    Logger()
+        .i('Updating lecture preference: ${lectureId} - ${activationValue}');
+    await db.update(
+        'lectureNotificationPreferences', {'isActive': activationValue},
+        where: 'id = ?', whereArgs: [lectureId]);
   }
 
   Future<bool> getNotificationPreference(int lectureId) async {
     final Database db = await this.getDatabase();
-    var preference = await db.query(
-        'lectureNotificationPreferences',
-        columns: ['isActive'],
-        where: 'id = ?',
-        whereArgs: [lectureId]
-    );
+    var preference = await db.query('lectureNotificationPreferences',
+        columns: ['isActive'], where: 'id = ?', whereArgs: [lectureId]);
     return preference[0]['isActive'] == 1 ? true : false;
   }
 
