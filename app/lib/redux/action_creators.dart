@@ -59,6 +59,7 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
       if (session.authenticated) {
         await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
+        await notificationSetUp();
         action?.complete();
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
@@ -279,12 +280,7 @@ ThunkAction<AppState> getUserSchedule(
       // Updates local database according to the information fetched -- Lectures
       if (userPersistentInfo.item1 != '' && userPersistentInfo.item2 != '') {
         final AppLecturesDatabase lecturesDb = AppLecturesDatabase();
-        final AppLectureNotificationPreferencesDatabase
-            lecturesNotificationPreferencesDb =
-            AppLectureNotificationPreferencesDatabase();
         lecturesDb.saveNewLectures(lectures);
-        lecturesNotificationPreferencesDb
-            .saveNewPreferencesThroughLectures(lectures);
       }
 
       store.dispatch(SetScheduleAction(lectures));

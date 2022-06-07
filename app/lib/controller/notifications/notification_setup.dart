@@ -31,12 +31,28 @@ Future<List<NotificationPreference>> notificationPreferences() async {
 }
 
 Future<List<NotificationData>> notificationsData() async {
-  return AppNotificationDataDatabase().notificationsData();
+  return await AppNotificationDataDatabase().notificationsData();
 }
 
 Future<List<LectureNotificationPreference>>
     lectureNotificationPreferences() async {
-  return AppLectureNotificationPreferencesDatabase().preferences();
+  final AppLecturesDatabase lecturesDb = AppLecturesDatabase();
+  final AppLectureNotificationPreferencesDatabase
+      lecturesNotificationPreferencesDb =
+      AppLectureNotificationPreferencesDatabase();
+  List<Lecture> lectures = await lecturesDb.lectures();
+  final List<LectureNotificationPreference> lectureNotificationPreferences =
+      await lecturesNotificationPreferencesDb.preferences();
+  // While lectures have not been saved in database from remote
+  while (lectures.isEmpty) {
+    await Future.delayed(const Duration(milliseconds: 100));
+    lectures = await lecturesDb.lectures();
+  }
+  if (lectures.length > lectureNotificationPreferences.length) {
+    await lecturesNotificationPreferencesDb
+        .saveNewPreferencesThroughLectures(lectures);
+  }
+  return await AppLectureNotificationPreferencesDatabase().preferences();
 }
 
 Future<void> deleteNotifications() async {
@@ -66,9 +82,7 @@ Future<void> notificationSetUp() async {
 
 Future<void> classNotificationSetUp(int antecedence) async {
   final preferences = await lectureNotificationPreferences();
-  Logger().i('Lecture preferences:' + preferences.toString());
   final alreadyScheduled = await notificationsData();
-  Logger().i('Notification data:' + alreadyScheduled.toString());
   final List<Lecture> lectures = await AppLecturesDatabase().lectures();
   for (Lecture lecture in lectures) {
     if (!shouldScheduleClass(lecture, alreadyScheduled, preferences)) {

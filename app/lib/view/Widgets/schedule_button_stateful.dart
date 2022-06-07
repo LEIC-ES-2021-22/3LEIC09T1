@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:tuple/tuple.dart';
 import 'package:uni/controller/local_storage/app_lecture_notification_preferences_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
@@ -17,17 +16,16 @@ class ScheduleButton extends StatefulWidget {
 
 class ScheduleButtonState extends State<ScheduleButton> {
   final int lectureId;
-  bool notificationActivated = false;
+  bool _notificationActivated = false;
   bool _permanentSession = false;
 
   ScheduleButtonState({@required this.lectureId}) {
-    retrievePermanentSession();
-    if (_permanentSession) {
-      retrieveActivationStatus();
-    }
+    retrievePermanentSession().then((value) => {
+          if (_permanentSession) {retrieveActivationStatus()}
+        });
   }
 
-  retrievePermanentSession() async {
+  Future<void> retrievePermanentSession() async {
     final Tuple2<String, String> userPersistentInfo =
         await AppSharedPreferences.getPersistentUserInfo();
     if (mounted) {
@@ -39,12 +37,13 @@ class ScheduleButtonState extends State<ScheduleButton> {
     }
   }
 
-  void retrieveActivationStatus() async {
-    notificationActivated = await AppLectureNotificationPreferencesDatabase()
-        .getNotificationPreference(lectureId);
+  Future<void> retrieveActivationStatus() async {
+    final bool notificationActivated =
+        await AppLectureNotificationPreferencesDatabase()
+            .getNotificationPreference(lectureId);
     if (mounted) {
       setState(() {
-        notificationActivated = !notificationActivated;
+        _notificationActivated = notificationActivated;
       });
     }
   }
@@ -52,10 +51,10 @@ class ScheduleButtonState extends State<ScheduleButton> {
   void onPressed() {
     if (!_permanentSession) return;
     setState(() {
-      notificationActivated = !notificationActivated;
+      _notificationActivated = !_notificationActivated;
     });
     AppLectureNotificationPreferencesDatabase()
-        .setNotificationPreference(lectureId, notificationActivated);
+        .setNotificationPreference(lectureId, _notificationActivated);
     resetNotifications();
   }
 
@@ -67,9 +66,9 @@ class ScheduleButtonState extends State<ScheduleButton> {
             scale: 0.8,
             child: FloatingActionButton(
                 onPressed: onPressed,
-                child: Icon(!notificationActivated
-                    ? Icons.alarm_off_rounded
-                    : Icons.alarm_add_rounded),
+                child: Icon(_notificationActivated
+                    ? Icons.alarm_add_rounded
+                    : Icons.alarm_off_rounded),
                 heroTag: null)));
   }
 }

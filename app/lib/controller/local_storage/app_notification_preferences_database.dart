@@ -23,6 +23,7 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
 
   /// Replaces all of the data in this database with [preferences].
   saveNewPreferences(List<NotificationPreference> preferences) async {
+    Logger().i('Saving new preferences: ${preferences}');
     await deletePreferences();
     await _insertPreferences(preferences);
   }
@@ -73,7 +74,7 @@ class AppNotificationPreferencesDatabase extends AppDatabase {
 
   Future<void> replacePreference(NotificationPreference preference) async {
     final Database db = await this.getDatabase();
-    Logger().d('Updating preference: ${preference.toMap()}');
+    Logger().i('Updating preference: ${preference.toMap()}');
     await db.update('notification_preferences', preference.toMap(),
         where: 'notificationType = ?',
         whereArgs: [preference.notificationType]);

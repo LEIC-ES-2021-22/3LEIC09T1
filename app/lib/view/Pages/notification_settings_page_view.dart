@@ -26,13 +26,12 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
   };
 
   NotificationSettingsPageViewState() {
-    retrievePermanentSession();
-    if (_permanentSession) {
-      retrieveSettingsFromDatabase();
-    }
+    retrievePermanentSession().then((value) => {
+          if (_permanentSession) {retrieveSettingsFromDatabase()}
+        });
   }
 
-  retrieveSettingsFromDatabase() async {
+  Future<void> retrieveSettingsFromDatabase() async {
     final db = AppNotificationPreferencesDatabase();
     for (var key in notificationSettings.keys) {
       notificationSettings[key] = await db.getPreference(key);
@@ -42,7 +41,7 @@ class NotificationSettingsPageViewState extends SecondaryPageViewState {
     }
   }
 
-  retrievePermanentSession() async {
+  Future<void> retrievePermanentSession() async {
     final Tuple2<String, String> userPersistentInfo =
         await AppSharedPreferences.getPersistentUserInfo();
     if (mounted) {
