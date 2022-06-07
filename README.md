@@ -1,4 +1,4 @@
-# 3LEIC09T - Team UniNotif Development Report
+# 3LEIC09T1 - Team UniNotif Development Report
 
 Welcome to the documentation pages of the UniNotif!
 
@@ -7,7 +7,7 @@ You can find here detailed about the product, from a high-level vision to low-le
 <!-- * Business modeling  -->
 * [Product Vision](#product-vision)
   <!-- * [Elevator Pitch](#Elevator-Pitch) -->
-- [3LEIC09T - Team UniNotif Development Report](#3leic09t---team-uninotif-development-report)
+- [3LEIC09T1 - Team UniNotif Development Report](#3leic09t1---team-uninotif-development-report)
     - [Members](#members)
   - [Product Vision](#product-vision)
     - [Main Features](#main-features)
@@ -127,7 +127,9 @@ Notifications turned off           | Notifications turned on
 :---------------------------------:|:-------------------------------------------:
 ![Print of vertical prototype 1](img/vertical-prototype-1.png)  |  ![Print of vertical prototype 2](img/vertical-prototype-2.png)
 
+---
 
+## Iterations
 
 ### 1st iteration
 [Release](https://github.com/LEIC-ES-2021-22/3LEIC09T1/releases/tag/Iteration1)
@@ -162,4 +164,27 @@ To some members, the test gimmicks are still somewhat troubling to figure out. A
   - The scheduling of recuring notifications on a specific day 
 
 ![Print of second iteration](img/incremento2.png)
+
+
+### 3rd iteration
+[Release](https://github.com/LEIC-ES-2021-22/3LEIC09T1/releases/tag/Iteration3)
+
+#### What went well
+
+- We improved our usage of GitFlow by:
+  - reviewing more pull requests
+  - better commit naming
+- We created actions to run unit tests
+- We completed the lecture notifications' user stories
+
+
+#### What went wrong
+- Distribution of tasks was imbalanced
+- Gherkin tests were left to the last minute
+
+#### What still puzzles me
+  - Nothing
+
+![Print of third iteration](img/incremento3.png)
+
 
