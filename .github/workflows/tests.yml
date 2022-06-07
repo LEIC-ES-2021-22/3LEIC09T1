@@ -1,0 +1,32 @@
+name: FLutter_Tests
+
+on:
+  push:
+    branches: [ dev, main ]
+  pull_request:
+    branches: [ dev, main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code from PR/Commit
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2.0.1
+        with:
+          flutter-version: '2.0.1'
+
+      - name: Restore packages
+        run: |
+          cd app/
+          flutter pub get
+        
+      - name: Run tests
+        run: |
+          cd app/
+          flutter test --coverage

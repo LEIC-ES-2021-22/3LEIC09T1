@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 
 /// Stores information about a lecture.
 class Lecture {
+  // TODO: maybe could implement an abstract class
   static var dayName = [
     'Segunda-feira',
     'Terça-feira',
@@ -31,7 +32,8 @@ class Lecture {
   int get id {
     //We assume that there is only one class of a given type in a given day
     BigInt agregatedId = BigInt.from(0);
-    List<int> hashBytes = sha256.convert(utf8.encode('$subject-$typeClass-$day')).bytes;
+    List<int> hashBytes =
+        sha256.convert(utf8.encode('$subject-$typeClass-$day-$startTime-$room')).bytes;
     for (var byte in hashBytes) {
       agregatedId += BigInt.from(byte);
     }
@@ -112,18 +114,8 @@ class Lecture {
     final endTimeHours =
         (startTimeMinutes + (blocks * 30)) ~/ 60 + startTimeHours;
     final endTimeMinutes = (startTimeMinutes + (blocks * 30)) % 60;
-    return Lecture(
-        subject,
-        typeClass,
-        day,
-        blocks,
-        room,
-        teacher,
-        classNumber,
-        startTimeHours,
-        startTimeMinutes,
-        endTimeHours,
-        endTimeMinutes);
+    return Lecture(subject, typeClass, day, blocks, room, teacher, classNumber,
+        startTimeHours, startTimeMinutes, endTimeHours, endTimeMinutes);
   }
 
   /// Clones a lecture from the api.
@@ -189,13 +181,13 @@ class Lecture {
   @override
   bool operator ==(o) =>
       o is Lecture &&
-      this.subject == o.subject &&
-      this.startTime == o.startTime &&
-      this.endTime == o.endTime &&
-      this.typeClass == o.typeClass &&
-      this.room == o.room &&
-      this.teacher == o.teacher &&
-      this.day == o.day &&
-      this.blocks == o.blocks &&
-      this.startTimeSeconds == o.startTimeSeconds;
+          this.subject == o.subject &&
+          this.startTime == o.startTime &&
+          this.endTime == o.endTime &&
+          this.typeClass == o.typeClass &&
+          this.room == o.room &&
+          this.teacher == o.teacher &&
+          this.day == o.day &&
+          this.blocks == o.blocks &&
+          this.startTimeSeconds == o.startTimeSeconds;
 }

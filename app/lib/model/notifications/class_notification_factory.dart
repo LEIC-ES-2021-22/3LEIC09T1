@@ -21,9 +21,9 @@ class ClassNotificationFactory extends NotificationFactory<Lecture> {
   }
 
   tz.TZDateTime calculateTime(Lecture notificationModel, int antecedence) {
-    return tzu.calculateDayInNextWeek(
+    return tzu.calculateNextDay(
         now: tz.TZDateTime.now(tz.local),
-        indexDayOfWeek: notificationModel.day + 1,
+        indexDayOfWeek: notificationModel.day,
         antecedence: Duration(minutes: antecedence),
         startTimeHours: notificationModel.startTimeHours,
         startTimeMinutes: notificationModel.startTimeMinutes

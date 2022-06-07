@@ -1,9 +1,11 @@
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
+import 'package:uni/view/Pages/notification_settings_page_view.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/request_dependent_widget_builder.dart';
 import 'package:uni/view/Widgets/schedule_slot.dart';
+import 'package:uni/view/Widgets/schedule_button_stateful.dart';
 
 /// Manages the 'schedule' sections of the app
 class SchedulePageView extends StatelessWidget {
@@ -20,6 +22,7 @@ class SchedulePageView extends StatelessWidget {
   final RequestStatus scheduleStatus;
   final TabController tabController;
   final ScrollController scrollViewController;
+  int fabIconNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,19 @@ class SchedulePageView extends StatelessWidget {
           child: TabBarView(
         controller: tabController,
         children: createSchedule(context),
-      ))
+      )),
+      Align(
+        alignment: Alignment.center,
+        child: ElevatedButton(
+          child: const Text('Ver menu notificações'),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NotificationSettingsPageView()));
+          },
+        ),
+      )
     ]);
   }
 
@@ -72,15 +87,23 @@ class SchedulePageView extends StatelessWidget {
     final List<Widget> scheduleContent = <Widget>[];
     for (int i = 0; i < lectures.length; i++) {
       final Lecture lecture = lectures[i];
-      scheduleContent.add(ScheduleSlot(
-        subject: lecture.subject,
-        typeClass: lecture.typeClass,
-        rooms: lecture.room,
-        begin: lecture.startTime,
-        end: lecture.endTime,
-        teacher: lecture.teacher,
-        classNumber: lecture.classNumber,
-      ));
+
+      final Stack stk = Stack(
+        children: <Widget>[
+          ScheduleSlot(
+            subject: lecture.subject,
+            typeClass: lecture.typeClass,
+            rooms: lecture.room,
+            begin: lecture.startTime,
+            end: lecture.endTime,
+            teacher: lecture.teacher,
+            classNumber: lecture.classNumber,
+          ),
+          ScheduleButton(lectureId: lecture.id)
+        ],
+      );
+
+      scheduleContent.add(stk);
     }
     return scheduleContent;
   }
@@ -110,5 +133,14 @@ class SchedulePageView extends StatelessWidget {
           Center(child: Text('Não possui aulas à ' + daysOfTheWeek[day] + '.')),
       index: day,
     );
+  }
+
+  IconData setIcon(IconData ic) {
+    if (ic == Icons.alarm_add_rounded) {
+      ic = Icons.alarm_off_rounded;
+    } else {
+      ic = Icons.alarm_add_rounded;
+    }
+    return ic;
   }
 }
