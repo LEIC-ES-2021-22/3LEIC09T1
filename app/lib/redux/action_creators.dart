@@ -59,7 +59,7 @@ ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
       if (session.authenticated) {
         await loadRemoteUserInfoToState(store);
         store.dispatch(SetLoginStatusAction(RequestStatus.successful));
-        await notificationSetUp();
+        await resetNotifications();
         action?.complete();
       } else {
         store.dispatch(SetLoginStatusAction(RequestStatus.failed));
